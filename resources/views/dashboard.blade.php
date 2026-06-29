@@ -89,12 +89,11 @@
         <h1>SIMANTA</h1>
         <p>PT Surveyor Indonesia</p>
     </div>
-    <div class="sidebar-label">NAVIGASI</div>
     <a href="/dashboard" class="active">📊 Dashboard</a>
     <a href="/monitoring">📋 Monitoring Tagihan</a>
     <a href="/tagihan">🗂️ Kelola Data Tagihan</a>
-    <a href="#">💳 Mencatat Pembayaran</a>
-    <a href="#">📄 Laporan</a>
+    <a href="/pembayaran">💳 Mencatat Pembayaran</a>
+    <a href="/laporan">📄 Laporan</a>
     <div class="sidebar-footer">
         <p>{{ auth()->user()->name }}</p>
         <span>administrator</span>

@@ -104,8 +104,8 @@
     <a href="/dashboard">📊 Dashboard</a>
     <a href="/monitoring" class="active">📋 Monitoring Tagihan</a>
     <a href="/tagihan">🗂️ Kelola Data Tagihan</a>
-    <a href="#">💳 Mencatat Pembayaran</a>
-    <a href="#">📄 Laporan</a>
+    <a href="/pembayaran">💳 Mencatat Pembayaran</a>
+    <a href="/laporan">📄 Laporan</a>
     <div class="sidebar-footer">
         <p>{{ auth()->user()->name }}</p>
         <span>administrator</span>
