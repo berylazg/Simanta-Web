@@ -91,8 +91,8 @@
     </div>
     <div class="sidebar-label">NAVIGASI</div>
     <a href="/dashboard" class="active">📊 Dashboard</a>
-    <a href="#">📋 Monitoring Tagihan</a>
-    <a href="#">🗂️ Kelola Data Tagihan</a>
+    <a href="/monitoring">📋 Monitoring Tagihan</a>
+    <a href="/tagihan">🗂️ Kelola Data Tagihan</a>
     <a href="#">💳 Mencatat Pembayaran</a>
     <a href="#">📄 Laporan</a>
     <div class="sidebar-footer">
