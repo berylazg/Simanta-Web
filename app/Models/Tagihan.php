@@ -40,9 +40,15 @@ class Tagihan extends Model
         return $this->hasOne(Pembayaran::class, 'tagihan_id');
     }
 
+    // Relasi ke Notifikasi
+    public function notifikasi()
+{
+    return $this->hasMany(Notifikasi::class);
+}
+
     // Relasi ke reminder
     public function reminders()
     {
-        return $this->hasMany(Reminder::class, 'tagihan_id');
+    return $this->hasMany(Reminder::class, 'tagihan_id');
     }
 }

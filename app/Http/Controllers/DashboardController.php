@@ -18,7 +18,6 @@ class DashboardController extends Controller
         $terlambat        = Tagihan::where('status', 'overdue')->count();
         $lunas            = Tagihan::where('status', 'paid')->count();
         $reminderTerkirim = Reminder::where('status_kirim', 'terkirim')->count();
-
         // Jatuh tempo minggu ini
         $jatuhTempoMingguIni = Tagihan::whereIn('status', ['upcoming', 'overdue'])
             ->whereBetween('tanggal_jatuh_tempo', [

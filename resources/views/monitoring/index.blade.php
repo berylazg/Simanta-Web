@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>SIMANTA — Monitoring Tagihan</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
@@ -122,7 +123,24 @@
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
             <span style="color:#64748b;font-size:12px;">📅 {{ now()->translatedFormat('l, d F Y') }}</span>
-            <span class="user-badge">{{ auth()->user()->name }}</span>
+
+            {{-- IKON NOTIFIKASI --}}
+            <div style="position:relative;">
+                <button onclick="toggleNotif()" style="background:none;border:none;font-size:20px;cursor:pointer;position:relative;">
+                    🔔
+                    <span id="notifBadge" style="display:none;position:absolute;top:-4px;right:-4px;background:#ef4444;color:white;font-size:10px;font-weight:700;border-radius:50%;width:16px;height:16px;align-items:center;justify-content:center;">0</span>
+                </button>
+                <div id="notifDropdown" style="display:none;position:absolute;right:0;top:32px;width:320px;background:white;border:1px solid #e2e8f0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:400px;overflow-y:auto;z-index:50;">
+                    <div id="notifList" style="padding:8px;"></div>
+                </div>
+            </div>
+
+            <a href="{{ route('profile.edit') }}" class="user-badge" style="display:flex; align-items:center; gap:8px; text-decoration:none; cursor:pointer;">
+                @if(auth()->user()->foto)
+                    <img src="{{ asset('storage/foto-profil/' . auth()->user()->foto) }}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">
+                @endif
+                {{ auth()->user()->name }}
+            </a>
         </div>
     </div>
 
@@ -253,11 +271,11 @@
                         </td>
                         <td>
                             @php $lastReminder = $t->reminders->sortByDesc('waktu_kirim')->first(); @endphp
-                            @if($lastReminder && $lastReminder->status_kirim === 'terkirim')
+                                @if($lastReminder && $lastReminder->status_kirim === 'terkirim')
                                 <span class="reminder-badge sent">✔ Terkirim</span>
-                            @elseif($lastReminder && $lastReminder->status_kirim === 'dijadwalkan')
+                                @elseif($lastReminder && $lastReminder->status_kirim === 'dijadwalkan')
                                 <span class="reminder-badge sched">🕐 Dijadwalkan</span>
-                            @else
+                                @else
                                 <span class="reminder-badge none">— Belum</span>
                             @endif
                         </td>
@@ -278,6 +296,61 @@
 
     </div>
 </div>
+
+<script>
+async function toggleNotif() {
+    const dropdown = document.getElementById('notifDropdown');
+    const isOpen = dropdown.style.display === 'block';
+    dropdown.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen) await muatNotifikasi();
+}
+
+async function muatNotifikasi() {
+    const res = await fetch("{{ route('notifikasi.data') }}");
+    const data = await res.json();
+    const list = document.getElementById('notifList');
+    const badge = document.getElementById('notifBadge');
+
+    list.innerHTML = '';
+    if (data.notifikasi.length === 0) {
+        list.innerHTML = '<p style="padding:20px;text-align:center;color:#94a3b8;font-size:13px;">Tidak ada notifikasi</p>';
+    } else {
+        data.notifikasi.forEach(n => {
+            const warna = n.tipe === 'paid' ? '#16a34a' : n.tipe === 'overdue' ? '#dc2626' : '#ca8a04';
+            list.innerHTML += `
+                <div style="padding:10px 12px;border-bottom:1px solid #f1f5f9;cursor:pointer;background:${n.is_read ? 'white' : '#f0f9ff'};"
+                     onclick="bacaNotif(${n.id})">
+                    <p style="font-size:13px;color:#374151;border-left:3px solid ${warna};padding-left:8px;">${n.pesan}</p>
+                    <span style="font-size:11px;color:#94a3b8;padding-left:11px;">${n.waktu}</span>
+                </div>`;
+        });
+    }
+
+    if (data.unread_count > 0) {
+        badge.style.display = 'flex';
+        badge.innerText = data.unread_count;
+    } else {
+        badge.style.display = 'none';
+    }
+}
+
+async function bacaNotif(id) {
+    await fetch(`/notifikasi/${id}/dibaca`, {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
+    });
+    muatNotifikasi();
+}
+
+document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('notifDropdown');
+    if (!e.target.closest('[onclick="toggleNotif()"]') && !e.target.closest('#notifDropdown')) {
+        dropdown.style.display = 'none';
+    }
+});
+
+muatNotifikasi();
+</script>
 
 </body>
 </html>

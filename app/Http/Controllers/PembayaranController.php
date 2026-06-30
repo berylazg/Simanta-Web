@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Tagihan;
 use App\Models\Pembayaran;
 use App\Models\AktivitasLog;
+use App\Models\Notifikasi;
 
 class PembayaranController extends Controller
 {
@@ -54,6 +55,12 @@ class PembayaranController extends Controller
         // Update status tagihan jadi paid
         $tagihan = Tagihan::findOrFail($request->tagihan_id);
         $tagihan->update(['status' => 'paid']);
+
+        Notifikasi::create([
+            'tagihan_id' => $tagihan->id,
+            'tipe' => 'paid',
+            'pesan' => "Tagihan {$tagihan->nama_tagihan} telah Lunas",
+        ]);
 
         // Catat aktivitas
         AktivitasLog::create([
