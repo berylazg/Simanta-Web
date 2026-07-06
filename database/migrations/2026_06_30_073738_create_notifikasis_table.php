@@ -12,13 +12,26 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notifikasis', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('tagihan_id')->constrained()->onDelete('cascade');
-            $table->enum('tipe', ['akan_jt', 'terlambat', 'lunas']);
-            $table->string('pesan');
-            $table->boolean('is_read')->default(false);
-            $table->timestamps();
-        });
+
+    $table->id();
+
+    $table->foreignId('tagihan_id')
+          ->nullable()
+          ->constrained('tagihans')
+          ->nullOnDelete();
+
+    $table->enum('tipe',[
+        'email',
+        'system'
+    ]);
+
+    $table->text('pesan');
+
+    $table->boolean('is_read')->default(false);
+
+    $table->timestamps();
+
+});
     }
 
     /**

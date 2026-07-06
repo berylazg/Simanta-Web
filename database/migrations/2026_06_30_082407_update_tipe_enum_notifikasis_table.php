@@ -12,7 +12,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::statement("ALTER TABLE notifikasis MODIFY tipe ENUM('upcoming', 'overdue', 'paid') NOT NULL");
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE notifikasis MODIFY tipe ENUM('upcoming', 'overdue', 'paid') NOT NULL");
+        }
     }
 
     /**
@@ -20,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement("ALTER TABLE notifikasis MODIFY tipe ENUM('akan_jt', 'terlambat', 'lunas') NOT NULL");
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE notifikasis MODIFY tipe ENUM('akan_jt', 'terlambat', 'lunas') NOT NULL");
+        }
     }
 };
