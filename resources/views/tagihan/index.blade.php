@@ -376,6 +376,25 @@
                     </div>
                 </div>
 
+                <div class="form-row full">
+    <div class="form-group">
+        <label>Upload Invoice (PDF)</label>
+
+        <input
+            type="file"
+            name="file_invoice"
+            accept=".pdf,application/pdf">
+
+                <div class="hint">
+                    Format PDF • Maksimal 10 MB
+                </div>
+
+                @error('file_invoice')
+                    <div class="field-error">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
             </div>{{-- end modal-body --}}
 
             <div class="modal-footer">
