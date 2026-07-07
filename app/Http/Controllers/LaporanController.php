@@ -19,7 +19,7 @@ class LaporanController extends Controller
         if ($request->bulan)      $query->whereMonth('tanggal_jatuh_tempo', $request->bulan);
         if ($request->tahun)      $query->whereYear('tanggal_jatuh_tempo',  $request->tahun);
         if ($request->vendor_id)  $query->where('vendor_id',  $request->vendor_id);
-        if ($request->kategori_id) $query->where('kategori_id', $request->kategori_id)
+        if ($request->kategori_id) $query->where('kategori_id', $request->kategori_id);
 
         $tagihans = $query->with(['vendor','kategori'])->get();
 
