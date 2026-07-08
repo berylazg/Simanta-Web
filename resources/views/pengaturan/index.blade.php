@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>SIMANTA — Dashboard</title>
+    <title>SIMANTA — Pengaturan</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Segoe UI',sans-serif; background:#f1f5f9; display:flex; min-height:100vh; }
@@ -21,24 +21,6 @@
         .sidebar-footer { position:fixed; bottom:0; width:220px; padding:16px 20px; border-top:1px solid rgba(255,255,255,0.1); background:#1a2744; }
         .sidebar-footer p { color:white; font-size:13px; font-weight:600; }
         .sidebar-footer span { color:rgba(255,255,255,0.45); font-size:11px; }
-
-        .logout-btn{
-            width:100%;
-            margin-top:12px;
-            padding:10px;
-            background:#ef4444;
-            color:white;
-            border:none;
-            border-radius:8px;
-            cursor:pointer;
-            font-size:13px;
-            font-weight:600;
-            transition:.2s;
-        }
-
-        .logout-btn:hover{
-            background:#dc2626;
-        }
 
         /* MAIN */
         .main { flex:1; display:flex; flex-direction:column; }
@@ -98,6 +80,70 @@
 
         /* 2 kolom bawah */
         .bottom-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+        /* PENGATURAN */
+        .setting-grid{
+            display:grid;
+            grid-template-columns:2fr 1fr;
+            gap:20px;
+        }
+
+        .setting-card{
+            background:#fff;
+            border:1px solid #e2e8f0;
+            border-radius:12px;
+            padding:24px;
+        }
+
+        .setting-title{
+            font-size:16px;
+            font-weight:700;
+            color:#1e293b;
+            margin-bottom:6px;
+        }
+
+        .setting-desc{
+            color:#64748b;
+            font-size:13px;
+            margin-bottom:25px;
+        }
+
+        .setting-item{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:16px 0;
+            border-bottom:1px solid #f1f5f9;
+        }
+
+        .setting-item:last-child{
+            border-bottom:none;
+        }
+
+        .save-btn{
+            margin-top:25px;
+            background:#005BAC;
+            color:white;
+            border:none;
+            padding:12px 24px;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:600;
+        }
+
+        .summary-item{
+            padding:18px 0;
+            border-bottom:1px solid #f1f5f9;
+        }
+
+        .summary-item:last-child{
+            border-bottom:none;
+        }
+
+        .summary-item h2{
+            color:#005BAC;
+            margin-top:5px;
+        }
     </style>
 </head>
 <body>
@@ -108,22 +154,15 @@
         <h1>SIMANTA</h1>
         <p>PT Surveyor Indonesia</p>
     </div>
-    <a href="/dashboard" class="active">📊 Dashboard</a>
+    <a href="/dashboard">📊 Dashboard</a>
     <a href="/monitoring">📋 Monitoring Tagihan</a>
     <a href="/tagihan">🗂️ Kelola Data Tagihan</a>
     <a href="/pembayaran">💳 Mencatat Pembayaran</a>
     <a href="/laporan">📄 Laporan</a>
-    <a href="/pengaturan">⚙️ Pengaturan</a>
+    <a href="/pengaturan"  class="active">⚙️ Pengaturan</a>
     <div class="sidebar-footer">
         <p>{{ auth()->user()->name }}</p>
-        <span>Administrator</span>
-
-        <form method="POST" action="{{ route('logout') }}" style="margin-top:12px;">
-            @csrf
-            <button type="submit" class="logout-btn">
-                🚪 Logout
-            </button>
-        </form>
+        <span>administrator</span>
     </div>
 </div>
 
@@ -133,8 +172,8 @@
     {{-- TOPBAR --}}
     <div class="topbar">
         <div>
-            <h2>Dashboard</h2>
-            <p>Ringkasan monitoring tagihan operasional PT Surveyor Indonesia Cabang Palembang</p>
+            <h2>Pengaturan</h2>
+            <p>Konfigurasi reminder email otomatis.</p>
         </div>
         <div class="topbar-right">
     <span class="topbar-date">📅 {{ now()->translatedFormat('l, d F Y') }}</span>
@@ -161,161 +200,279 @@
 
     <div class="content">
 
-        {{-- STATISTIK --}}
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="val blue">{{ $totalTagihan }}</div>
-                <div class="lbl">Total Tagihan</div>
-                <div class="sub">Semua periode</div>
-            </div>
-            <div class="stat-card">
-                <div class="val yellow">{{ $belumDibayar }}</div>
-                <div class="lbl">Belum Dibayar</div>
-                <div class="sub">Upcoming + Overdue + Draft</div>
-            </div>
-            <div class="stat-card">
-                <div class="val red">{{ $jatuhTempoMingguIni }}</div>
-                <div class="lbl">Jatuh Tempo Minggu Ini</div>
-                <div class="sub">Perlu segera dibayar</div>
-            </div>
-            <div class="stat-card">
-                <div class="val red">{{ $terlambat }}</div>
-                <div class="lbl">Tagihan Terlambat</div>
-                <div class="sub">Melebihi tanggal jatuh tempo</div>
-            </div>
-            <div class="stat-card">
-                <div class="val purple">Rp {{ number_format($totalNilaiTagihan, 0, ',', '.') }}</div>
-                <div class="lbl">Total Nilai Tagihan Aktif</div>
-                <div class="sub">Belum terbayar</div>
-            </div>
-            <div class="stat-card">
-                <div class="val green">{{ $reminderTerkirim }}</div>
-                <div class="lbl">Reminder Terkirim</div>
-                <div class="sub">Email notifikasi otomatis</div>
-            </div>
+    @if(session('success'))
+        <div style="background:#dcfce7;color:#166534;padding:12px 16px;border-radius:8px;margin-bottom:20px;">
+            {{ session('success') }}
         </div>
+    @endif
 
-        {{-- TABEL TAGIHAN PENTING --}}
-        <div class="card">
-            <div class="card-header">
+    @if(session('error'))
+
+    <div style="
+    background:#fee2e2;
+    padding:15px;
+    border-radius:8px;
+    color:#991b1b;
+    margin-bottom:20px;
+    ">
+
+    {{ session('error') }}
+
+    </div>
+
+    @endif
+
+    @if ($errors->any())
+
+    <div style="
+    background:#fee2e2;
+    color:#991b1b;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:20px;
+    ">
+
+    @foreach($errors->all() as $error)
+
+    <div>{{ $error }}</div>
+
+    @endforeach
+
+    </div>
+
+    @endif
+
+    <form action="{{ route('pengaturan.update') }}" method="POST">
+    @csrf
+
+        <div class="setting-grid">
+
+            <!-- CARD PENGATURAN -->
+            <div class="setting-card">
+
+                <div class="setting-title">
+                    Pengaturan Reminder
+                </div>
+
+            <div class="setting-item">
+
                 <div>
-                    <h3>Tagihan Mendatang & Terlambat</h3>
-                    <p>Tagihan yang memerlukan perhatian segera</p>
+
+                    <div class="setting-name">
+                        Email Admin
+                    </div>
+
+                    <div class="setting-sub">
+                        Email yang akan menerima reminder tagihan.
+                    </div>
+
                 </div>
+
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>No. Invoice</th>
-                        <th>Nama Tagihan</th>
-                        <th>Vendor</th>
-                        <th>Kategori</th>
-                        <th>Jatuh Tempo</th>
-                        <th>Nominal</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($tagihanPenting as $t)
-                    <tr>
-                        <td class="td-inv">{{ $t->nomor_invoice }}</td>
-                        <td>
-                            {{ Str::limit($t->nama_tagihan, 35) }}
-                            <div class="td-sub">{{ $t->kategori->nama_kategori ?? '-' }}</div>
-                        </td>
-                        <td>{{ $t->vendor->nama_vendor ?? '-' }}</td>
-                        <td>{{ $t->kategori->nama_kategori ?? '-' }}</td>
-                        <td>
-                            <span class="{{ $t->status === 'overdue' ? 'td-red' : '' }}">
-                                {{ $t->tanggal_jatuh_tempo->format('d M Y') }}
-                            </span>
-                            <div class="td-sub">
-                                @if($t->status === 'overdue')
-                                    Terlambat {{ (int) now()->diffInDays($t->tanggal_jatuh_tempo) }} hari
-                                @else
-                                    {{ (int) $t->tanggal_jatuh_tempo->diffInDays(now()) }} hari lagi
-                                @endif
-                            </div>
-                        </td>
-                        <td>Rp {{ number_format($t->nominal, 0, ',', '.') }}</td>
-                        <td>
-                            @if($t->status === 'paid')
-                                <span class="badge badge-paid">Lunas</span>
-                            @elseif($t->status === 'upcoming')
-                                <span class="badge badge-upcoming">Akan JT</span>
-                            @elseif($t->status === 'overdue')
-                                <span class="badge badge-overdue">Terlambat</span>
-                            @else
-                                <span class="badge badge-draft">Draft</span>
-                            @endif
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="7" style="text-align:center;color:#94a3b8;padding:32px;">
-                            Tidak ada tagihan yang memerlukan perhatian
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
 
-        {{-- BAWAH: Distribusi Status + Aktivitas --}}
-        <div class="bottom-grid">
+            <input
+                type="email"
+                name="admin_email"
+                class="form-input"
+                placeholder="Masukkan email admin"
+                value="{{ old('admin_email', $setting->admin_email ?? '') }}"
+                style="
+                    width:100%;
+                    padding:10px;
+                    border:1px solid #d1d5db;
+                    border-radius:8px;
+                    margin-bottom:20px;
+                ">
 
-            {{-- Distribusi Status --}}
-            <div class="card">
-                <div class="card-header">
+                <div class="setting-item">
+
                     <div>
-                        <h3>Distribusi Status Tagihan</h3>
-                        <p>Jumlah tagihan per status</p>
+                        <strong>Aktifkan Reminder Email</strong>
+                        <br>
+                        <small style="color:#64748b;">
+                            Sistem akan mengirim reminder otomatis.
+                        </small>
                     </div>
+
+                    <input
+                        type="checkbox"
+                        name="status"
+                        {{ $setting && $setting->status ? 'checked' : '' }}>
+
                 </div>
-                <div style="padding:20px;">
-                    <table>
-                        <tr>
-                            <td><span class="badge badge-paid">Lunas</span></td>
-                            <td style="text-align:right;font-weight:700;color:#16a34a;">{{ $statusDistribusi['paid'] }} tagihan</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge badge-upcoming">Akan Jatuh Tempo</span></td>
-                            <td style="text-align:right;font-weight:700;color:#ca8a04;">{{ $statusDistribusi['upcoming'] }} tagihan</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge badge-overdue">Terlambat</span></td>
-                            <td style="text-align:right;font-weight:700;color:#dc2626;">{{ $statusDistribusi['overdue'] }} tagihan</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge badge-draft">Draft</span></td>
-                            <td style="text-align:right;font-weight:700;color:#2563eb;">{{ $statusDistribusi['draft'] }} tagihan</td>
-                        </tr>
-                    </table>
+
+                <div class="setting-desc">
+                    Atur kapan sistem akan mengirim email reminder kepada vendor sebelum jatuh tempo.
                 </div>
+
+                <div class="setting-item">
+                    <span>30 Hari Sebelum Jatuh Tempo</span>
+                    <input
+                        type="checkbox"
+                        name="h30"
+                        {{ $setting && $setting->h30 ? 'checked' : '' }}>
+                </div>
+
+                <div class="setting-item">
+                    <span>14 Hari Sebelum Jatuh Tempo</span>
+                    <input
+                        type="checkbox"
+                        name="h14"
+                        {{ $setting && $setting->h14 ? 'checked' : '' }}>
+                </div>
+
+                <div class="setting-item">
+                    <span>7 Hari Sebelum Jatuh Tempo</span>
+                    <input
+                        type="checkbox"
+                        name="h7"
+                        {{ $setting && $setting->h7 ? 'checked' : '' }}>
+                </div>
+
+                <div class="setting-item">
+                    <span>3 Hari Sebelum Jatuh Tempo</span>
+                    <input
+                        type="checkbox"
+                        name="h3"
+                        {{ $setting && $setting->h3 ? 'checked' : '' }}>
+                </div>
+
+                <div class="setting-item">
+                    <span>1 Hari Sebelum Jatuh Tempo</span>
+                    <input
+                        type="checkbox"
+                        name="h1"
+                        {{ $setting && $setting->h1 ? 'checked' : '' }}>
+                </div>
+
+                <div style="display:flex;gap:15px;margin-top:30px;">
+
+                    <button type="submit" class="save-btn">
+                        Simpan Pengaturan
+                    </button>
+
+                </form>
+
+                <form action="{{ route('pengaturan.testEmail') }}" method="POST">
+
+                    @csrf
+
+                    <button
+                        type="submit"
+                        class="save-btn"
+                        style="background:#16a34a;">
+
+                        Kirim Email Percobaan
+
+                    </button>
+
+                </form>
+
+                </div>
+
+                <div class="setting-card" style="margin-top:25px;">
+
+    <div class="setting-title">
+        Riwayat Pengiriman Reminder
+    </div>
+
+    <table style="width:100%;border-collapse:collapse;">
+
+        <thead>
+
+            <tr>
+
+                <th>Tanggal</th>
+
+                <th>Email</th>
+
+                <th>Status</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        @forelse($reminders as $reminder)
+
+        <tr>
+
+            <td>{{ $reminder->waktu_kirim }}</td>
+
+            <td>{{ $reminder->email_tujuan }}</td>
+
+            <td>
+
+                @if($reminder->status_kirim=='terkirim')
+
+                    <span style="color:green;">
+                        Terkirim
+                    </span>
+
+                @elseif($reminder->status_kirim=='gagal')
+
+                    <span style="color:red;">
+                        Gagal
+                    </span>
+
+                @else
+
+                    <span style="color:orange;">
+                        Terjadwal
+                    </span>
+
+                @endif
+
+            </td>
+
+        </tr>
+
+        @empty
+
+        <tr>
+
+            <td colspan="3">
+                Belum ada riwayat reminder.
+            </td>
+
+        </tr>
+
+        @endforelse
+
+        </tbody>
+
+    </table>
+
+</div>
             </div>
 
-            {{-- Aktivitas Terbaru --}}
-            <div class="card">
-                <div class="card-header">
-                    <h3>Aktivitas Terbaru</h3>
+            <!-- CARD STATISTIK -->
+            <div class="setting-card">
+
+                <div class="setting-title">
+                    Ringkasan Reminder
                 </div>
-                <div class="aktivitas-list">
-                    @foreach($aktivitasTerbaru as $log)
-                    <div class="aktivitas-item">
-                        <div class="akt-dot {{ str_contains($log->aksi, 'Pembayaran') ? 'green' : (str_contains($log->aksi, 'Reminder') ? 'blue' : (str_contains($log->aksi, 'Overdue') ? 'red' : 'yellow')) }}">
-                            {{ str_contains($log->aksi, 'Pembayaran') ? '✅' : (str_contains($log->aksi, 'Reminder') ? '📧' : (str_contains($log->aksi, 'Overdue') ? '⚠️' : '➕')) }}
-                        </div>
-                        <div class="akt-text">
-                            <p>{{ $log->keterangan }}</p>
-                            <span>{{ \Carbon\Carbon::parse($log->created_at)->diffForHumans() }}</span>
-                        </div>
-                    </div>
-                    @endforeach
+
+                <div class="summary-item">
+                    <small>Total Reminder Hari Ini</small>
+                    <h2>18</h2>
                 </div>
+
+                <div class="summary-item">
+                    <small>Berhasil</small>
+                    <h2 style="color:#10b981;">15</h2>
+                </div>
+
+                <div class="summary-item">
+                    <small>Gagal</small>
+                    <h2 style="color:#ef4444;">3</h2>
+                </div>
+
             </div>
 
         </div>
-
+        </form>
     </div>{{-- end content --}}
 </div>{{-- end main --}}
 

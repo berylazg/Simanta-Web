@@ -4,10 +4,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\PengaturanController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -19,6 +21,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pembayaran', [App\Http\Controllers\PembayaranController::class, 'index'])->name('pembayaran.index');
     Route::post('/pembayaran', [App\Http\Controllers\PembayaranController::class, 'store'])->name('pembayaran.store');
     Route::get('/laporan', [App\Http\Controllers\LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
+    Route::post('/pengaturan', [PengaturanController::class,'update'])->name('pengaturan.update');
+    Route::post('/pengaturan/test-email', [PengaturanController::class, 'testEmail'])->name('pengaturan.testEmail');
 
     // Notifikasi
     Route::get('/notifikasi/data', [NotifikasiController::class, 'data'])->name('notifikasi.data');
