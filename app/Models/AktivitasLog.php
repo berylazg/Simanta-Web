@@ -10,7 +10,7 @@ class AktivitasLog extends Model
     public    $timestamps = false;
 
     protected $fillable = [
-        'user_id', 'aksi', 'model_tipe', 'model_id', 'keterangan'
+        'user_id', 'aksi', 'model_tipe', 'model_id', 'keterangan', 'created_at'
     ];
 
     protected $casts = [
@@ -19,6 +19,6 @@ class AktivitasLog extends Model
 
     public function user()
     {
-        return $this->belongsTo(\App\Models\User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 }

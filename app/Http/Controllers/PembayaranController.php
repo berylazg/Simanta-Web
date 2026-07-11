@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tagihan;
 use App\Models\Pembayaran;
-use App\Models\AktivitasLog;
+use App\Services\AktivitasService;
 use App\Models\Notifikasi;
 
 class PembayaranController extends Controller
@@ -42,7 +42,7 @@ class PembayaranController extends Controller
         ]);
 
         // Simpan pembayaran
-        Pembayaran::create([
+        $pembayaran = Pembayaran::create([
             'tagihan_id'      => $request->tagihan_id,
             'user_id'         => auth()->id(),
             'tanggal_bayar'   => $request->tanggal_bayar,
@@ -63,13 +63,21 @@ class PembayaranController extends Controller
         ]);
 
         // Catat aktivitas
-        AktivitasLog::create([
-            'user_id'    => auth()->id(),
-            'aksi'       => 'Mencatat Pembayaran',
-            'model_tipe' => 'tagihans',
-            'model_id'   => $tagihan->id,
-            'keterangan' => 'Invoice '.$tagihan->nomor_invoice.' telah dicatat pembayarannya',
-        ]);
+        AktivitasService::log(
+            'Pembayaran Tagihan',
+            'Pembayaran',
+            $pembayaran->id,
+            'Pembayaran invoice '.$tagihan->nomor_invoice.
+            ' sebesar Rp '.number_format($pembayaran->jumlah_bayar, 0, ',', '.').
+            ' berhasil dicatat.'
+        );
+
+        AktivitasService::log(
+            'Tagihan Lunas',
+            'Tagihan',
+            $tagihan->id,
+            'Status tagihan '.$tagihan->nomor_invoice.' berubah menjadi Lunas.'
+        );
 
         return redirect()->route('pembayaran.index')
                          ->with('success', 'Pembayaran '.$tagihan->nomor_invoice.' berhasil dicatat! Status diubah menjadi Lunas.');

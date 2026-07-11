@@ -24,6 +24,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
     Route::post('/pengaturan', [PengaturanController::class,'update'])->name('pengaturan.update');
     Route::post('/pengaturan/test-email', [PengaturanController::class, 'testEmail'])->name('pengaturan.testEmail');
+    Route::put('/tagihan/{tagihan}', [TagihanController::class, 'update'])->name('tagihan.update');
+    Route::delete('/tagihan/{tagihan}', [TagihanController::class, 'destroy'])->name('tagihan.destroy');
 
     // Notifikasi
     Route::get('/notifikasi/data', [NotifikasiController::class, 'data'])->name('notifikasi.data');

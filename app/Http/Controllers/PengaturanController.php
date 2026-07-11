@@ -7,6 +7,7 @@ use App\Models\ReminderSetting;
 use App\Models\Reminder;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TestReminderMail;
+use App\Services\AktivitasService;
 
 class PengaturanController extends Controller
 {
@@ -42,6 +43,7 @@ class PengaturanController extends Controller
         $setting->status = $request->has('status');
 
         $setting->admin_email = $request->admin_email;
+        $setting->reminder_time = $request->reminder_time;
 
         $setting->h30 = $request->has('h30');
         $setting->h14 = $request->has('h14');
@@ -50,6 +52,14 @@ class PengaturanController extends Controller
         $setting->h1 = $request->has('h1');
 
         $setting->save();
+
+        AktivitasService::log(
+            'Update Pengaturan Reminder',
+            'ReminderSetting',
+            $setting->id,
+            'Pengaturan reminder diperbarui. Email: '.$setting->admin_email.
+            ', Jam: '.$setting->reminder_time
+        );
 
         return redirect()->route('pengaturan.index')
             ->with('success', 'Pengaturan berhasil disimpan.');
@@ -67,11 +77,26 @@ class PengaturanController extends Controller
 
             Mail::to($setting->admin_email)
                 ->send(new TestReminderMail());
+            
+            AktivitasService::log(
+                'Test Email',
+                'Reminder',
+                null,
+                'Email percobaan berhasil dikirim ke '.$setting->admin_email
+            );
 
             return back()->with('success', 'Email percobaan berhasil dikirim.');
 
         } catch (\Exception $e) {
 
+            AktivitasService::log(
+                'Test Email Gagal',
+                'Reminder',
+                null,
+                'Gagal mengirim email percobaan ke '.$setting->admin_email.
+                '. Error: '.$e->getMessage()
+            );
+            
             return back()->with('error', 'Gagal mengirim email: '.$e->getMessage());
 
         }

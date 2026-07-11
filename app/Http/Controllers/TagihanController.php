@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Tagihan;
 use App\Models\Vendor;
 use App\Models\KategoriTagihan;
+use App\Services\AktivitasService;
 use Carbon\Carbon;
 
 class TagihanController extends Controller
@@ -57,10 +58,70 @@ class TagihanController extends Controller
             'status.required'              => 'Status wajib dipilih.',
         ]);
 
+        public function update(Request $request, Tagihan $tagihan)
+        {
+            $request->validate([
+                'nomor_invoice'        => 'required|unique:tagihans,nomor_invoice,'.$tagihan->id,
+                'nama_tagihan'         => 'required',
+                'vendor_id'            => 'required|exists:vendors,id',
+                'kategori_id'          => 'required|exists:kategori_tagihans,id',
+                'nominal'              => 'required|numeric|min:0',
+                'tanggal_invoice'      => 'required|date',
+                'tanggal_jatuh_tempo'  => 'required|date|after_or_equal:tanggal_invoice',
+                'status'               => 'required',
+            ]);
+
+            $tanggalReminder = Carbon::parse($request->tanggal_jatuh_tempo)
+                ->subDays(7);
+
+            $tagihan->update([
+                'vendor_id'           => $request->vendor_id,
+                'kategori_id'         => $request->kategori_id,
+                'nomor_invoice'       => $request->nomor_invoice,
+                'nama_tagihan'        => $request->nama_tagihan,
+                'nomor_kontrak'       => $request->nomor_kontrak,
+                'nominal'             => $request->nominal,
+                'tanggal_invoice'     => $request->tanggal_invoice,
+                'tanggal_jatuh_tempo' => $request->tanggal_jatuh_tempo,
+                'tanggal_reminder'    => $tanggalReminder,
+                'status'              => $request->status,
+                'deskripsi'           => $request->deskripsi,
+            ]);
+
+            AktivitasService::log(
+                'Edit Tagihan',
+                'Tagihan',
+                $tagihan->id,
+                'Mengubah tagihan '.$tagihan->nomor_invoice
+            );
+
+            return redirect()
+                ->route('tagihan.index')
+                ->with('success', 'Tagihan berhasil diperbarui.');
+        }
+
+        public function destroy(Tagihan $tagihan)
+        {
+            $invoice = $tagihan->nomor_invoice;
+
+            AktivitasService::log(
+                'Hapus Tagihan',
+                'Tagihan',
+                $tagihan->id,
+                'Menghapus tagihan '.$invoice
+            );
+
+            $tagihan->delete();
+
+            return redirect()
+                ->route('tagihan.index')
+                ->with('success', 'Tagihan berhasil dihapus.');
+        }
+
         // Hitung tanggal reminder otomatis (7 hari sebelum jatuh tempo)
         $tanggalReminder = Carbon::parse($request->tanggal_jatuh_tempo)->subDays(7)->format('Y-m-d');
 
-        Tagihan::create([
+        $tagihan = Tagihan::create([
             'user_id'             => auth()->id(),
             'vendor_id'           => $request->vendor_id,
             'kategori_id'         => $request->kategori_id,
@@ -74,6 +135,14 @@ class TagihanController extends Controller
             'status'              => $request->status,
             'deskripsi'           => $request->deskripsi,
         ]);
+
+        AktivitasService::log(
+            'Tambah Tagihan',
+            'Tagihan',
+            $tagihan->id,
+            'Menambahkan tagihan '.$tagihan->nomor_invoice.
+            ' ('.$tagihan->nama_tagihan.') senilai Rp '.number_format($tagihan->nominal,0,',','.')
+        );
 
         return redirect()->route('tagihan.index')
                          ->with('success', 'Tagihan '.$request->nomor_invoice.' berhasil ditambahkan!');

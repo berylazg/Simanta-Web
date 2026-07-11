@@ -12,6 +12,7 @@ class ReminderSetting extends Model
         'h14',
         'h7',
         'h3',
-        'h1'
+        'h1',
+        'reminder_time'
     ];
 }
