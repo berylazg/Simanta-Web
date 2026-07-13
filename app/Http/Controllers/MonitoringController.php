@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tagihan;
-use App\Models\Vendor;
 use App\Models\KategoriTagihan;
 
 class MonitoringController extends Controller
@@ -19,7 +18,7 @@ class MonitoringController extends Controller
         $terlambat    = Tagihan::where('status', 'overdue')->count();
 
         // Query utama dengan filter
-        $query = Tagihan::with(['vendor', 'kategori', 'reminders']);
+        $query = Tagihan::with(['kategori', 'reminders']);
 
         // Filter search
         if ($request->search) {
@@ -30,8 +29,8 @@ class MonitoringController extends Controller
         }
 
         // Filter vendor
-        if ($request->vendor_id) {
-            $query->where('vendor_id', $request->vendor_id);
+        if ($request->nama_vendor) {
+            $query->where('nama_vendor', $request->nama_vendor);
         }
 
         // Filter kategori
@@ -45,7 +44,12 @@ class MonitoringController extends Controller
         }
 
         $tagihans  = $query->orderBy('tanggal_jatuh_tempo', 'asc')->get();
-        $vendors   = Vendor::orderBy('nama_vendor')->get();
+        $vendors = Tagihan::select('nama_vendor')
+            ->whereNotNull('nama_vendor')
+            ->where('nama_vendor', '!=', '')
+            ->distinct()
+            ->orderBy('nama_vendor')
+            ->pluck('nama_vendor');
         $kategoris = KategoriTagihan::all();
 
         return view('monitoring.index', compact(

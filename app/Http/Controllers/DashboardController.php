@@ -30,7 +30,7 @@ class DashboardController extends Controller
             ->sum('nominal');
 
         // ── Tagihan mendatang & terlambat (untuk tabel dashboard) ─
-        $tagihanPenting = Tagihan::with(['vendor', 'kategori', 'reminders'])
+        $tagihanPenting = Tagihan::with(['kategori', 'reminders'])
             ->whereIn('status', ['upcoming', 'overdue'])
             ->orderByRaw("CASE WHEN status = 'overdue' THEN 0 ELSE 1 END")
             ->orderBy('tanggal_jatuh_tempo', 'asc')

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tagihan;
-use App\Models\Vendor;
 use App\Models\KategoriTagihan;
 use Carbon\Carbon;
 
@@ -12,16 +11,22 @@ class LaporanController extends Controller
 {
     public function index(Request $request)
     {
-        $vendors   = Vendor::orderBy('nama_vendor')->get();
         $kategoris = KategoriTagihan::all();
+
+        $vendors = Tagihan::select('nama_vendor')
+            ->whereNotNull('nama_vendor')
+            ->where('nama_vendor', '!=', '')
+            ->distinct()
+            ->orderBy('nama_vendor')
+            ->pluck('nama_vendor');
 
         $query = Tagihan::query();
         if ($request->bulan)      $query->whereMonth('tanggal_jatuh_tempo', $request->bulan);
         if ($request->tahun)      $query->whereYear('tanggal_jatuh_tempo',  $request->tahun);
-        if ($request->vendor_id)  $query->where('vendor_id',  $request->vendor_id);
+        if ($request->nama_vendor)$query->where('nama_vendor', $request->nama_vendor);
         if ($request->kategori_id) $query->where('kategori_id', $request->kategori_id);
 
-        $tagihans = $query->with(['vendor','kategori'])->get();
+        $tagihans = $query->with(['kategori'])->get();
 
         // Statistik
         $totalTagihan    = $tagihans->count();
@@ -36,7 +41,7 @@ class LaporanController extends Controller
         for ($i = 5; $i >= 0; $i--) {
             $b = Carbon::now()->subMonths($i);
             $q = Tagihan::query();
-            if ($request->vendor_id)   $q->where('vendor_id',   $request->vendor_id);
+            if ($request->nama_vendor)   $q->where('nama_vendor',   $request->nama_vendor);
             if ($request->kategori_id) $q->where('kategori_id', $request->kategori_id);
             $bulanList[] = [
                 'label' => $b->format('M \'y'),
@@ -55,9 +60,23 @@ class LaporanController extends Controller
         $trenList = $bulanList;
 
         // Pengeluaran per kategori
-        $perKategori = KategoriTagihan::withSum(['tagihans as total' => function($q) use($request) {
-            if ($request->vendor_id) $q->where('vendor_id', $request->vendor_id);
-        }], 'nominal')->get()->filter(fn($k) => $k->total > 0);
+        $perKategori = KategoriTagihan::withSum([
+            'tagihans as total' => function ($q) use ($request) {
+
+                if ($request->nama_vendor) {
+                    $q->where('nama_vendor', $request->nama_vendor);
+                }
+
+                if ($request->bulan) {
+                    $q->whereMonth('tanggal_jatuh_tempo', $request->bulan);
+                }
+
+                if ($request->tahun) {
+                    $q->whereYear('tanggal_jatuh_tempo', $request->tahun);
+                }
+
+            }
+        ], 'nominal')->get()->filter(fn($k) => $k->total > 0);
 
         // Distribusi status
         $statusDist = [

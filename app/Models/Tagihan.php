@@ -9,7 +9,7 @@ class Tagihan extends Model
     protected $table = 'tagihans';
 
     protected $fillable = [
-        'user_id', 'vendor_id', 'kategori_id',
+        'user_id', 'nama_vendor', 'kategori_id',
         'nomor_invoice', 'nama_tagihan', 'nomor_kontrak',
         'nominal', 'tanggal_invoice', 'tanggal_jatuh_tempo',
         'tanggal_reminder', 'status', 'deskripsi', 'file_invoice'
@@ -21,12 +21,6 @@ class Tagihan extends Model
         'tanggal_reminder'     => 'date',
         'nominal'              => 'decimal:2',
     ];
-
-    // Relasi ke vendor
-    public function vendor()
-    {
-        return $this->belongsTo(Vendor::class, 'vendor_id');
-    }
 
     // Relasi ke kategori
     public function kategori()

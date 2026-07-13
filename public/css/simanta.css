@@ -1,0 +1,2717 @@
+/* ==========================================================================
+   SIMANTA — Design System
+   PT Surveyor Indonesia Cabang Palembang
+   Satu file CSS terpusat untuk seluruh halaman aplikasi.
+   ========================================================================== */
+
+:root {
+    /* Brand */
+    --primary: #005bac;
+    --primary-dark: #00478a;
+    --primary-darker: #003a70;
+    --primary-light: #eff6ff;
+    --primary-soft: rgba(0, 91, 172, 0.08);
+    --accent: #0ea5e9;
+
+    /* Navy (sidebar / hero) */
+    --navy-900: #0d1a30;
+    --navy-800: #16233f;
+    --navy-700: #1c2c4d;
+
+    /* Status */
+    --green: #10b981;
+    --green-dark: #059669;
+    --green-bg: #dcfce7;
+    --green-text: #16a34a;
+    --amber: #f59e0b;
+    --amber-dark: #d97706;
+    --amber-bg: #fef9c3;
+    --amber-text: #ca8a04;
+    --red: #ef4444;
+    --red-dark: #dc2626;
+    --red-bg: #fee2e2;
+    --red-text: #dc2626;
+    --blue: #3b82f6;
+    --blue-bg: #dbeafe;
+    --blue-text: #2563eb;
+    --purple: #8b5cf6;
+    --purple-bg: #ede9fe;
+    --purple-text: #7c3aed;
+    --orange: #f97316;
+    --orange-bg: #ffedd5;
+    --orange-text: #c2410c;
+    --slate-bg: #f1f5f9;
+    --slate-text: #64748b;
+
+    /* Neutrals */
+    --ink-900: #0f172a;
+    --ink-800: #1e293b;
+    --ink-600: #475569;
+    --ink-500: #64748b;
+    --ink-400: #94a3b8;
+    --line: #e6ebf1;
+    --line-soft: #f0f3f7;
+    --surface: #ffffff;
+    --bg: #f4f6f9;
+
+    /* Effects */
+    --radius-sm: 8px;
+    --radius: 12px;
+    --radius-lg: 18px;
+    --radius-full: 999px;
+    --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-sm:
+        0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-md:
+        0 8px 24px -4px rgba(15, 23, 42, 0.1),
+        0 2px 8px -2px rgba(15, 23, 42, 0.06);
+    --shadow-lg: 0 20px 48px -12px rgba(15, 23, 42, 0.22);
+    --shadow-navy: 4px 0 24px rgba(0, 0, 0, 0.15);
+    --sidebar-w: 240px;
+
+    --font:
+        "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+        sans-serif;
+}
+
+/* ==========================================================================
+   RESET
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+body {
+    font-family: var(--font);
+    color: var(--ink-800);
+    background: var(--bg);
+    line-height: 1.5;
+}
+a {
+    color: inherit;
+}
+button {
+    font-family: inherit;
+}
+::selection {
+    background: var(--primary-soft);
+    color: var(--primary-darker);
+}
+svg.icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ==========================================================================
+   APP SHELL  (dashboard, monitoring, tagihan, pembayaran, laporan, pengaturan)
+   ========================================================================== */
+body.simanta-app {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg);
+}
+
+/* ---- Sidebar ---- */
+.simanta-app .sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    flex-shrink: 0;
+    padding: 22px 0 0;
+    background: linear-gradient(
+        190deg,
+        var(--navy-700) 0%,
+        var(--navy-900) 78%
+    );
+    box-shadow: var(--shadow-navy);
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+}
+.simanta-app .sidebar-brand {
+    padding: 0 20px 20px;
+    margin: 0 20px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.simanta-app .sidebar-brand-icon {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: linear-gradient(145deg, var(--primary), var(--accent));
+    box-shadow: 0 4px 12px rgba(0, 91, 172, 0.4);
+}
+.simanta-app .sidebar-brand-icon .icon {
+    width: 19px;
+    height: 19px;
+    color: #fff;
+}
+.simanta-app .sidebar-brand h1 {
+    color: #fff;
+    font-size: 16.5px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+}
+.simanta-app .sidebar-brand p {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 10.5px;
+    margin-top: 1px;
+}
+
+.simanta-app .sidebar-label {
+    color: rgba(255, 255, 255, 0.32);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    padding: 0 24px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+.simanta-app .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+}
+.simanta-app .sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 2px 12px;
+    padding: 10px 14px;
+    color: rgba(255, 255, 255, 0.62);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 10px;
+    transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease;
+}
+.simanta-app .sidebar a .icon {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    opacity: 0.85;
+}
+.simanta-app .sidebar a span {
+    flex: 1;
+}
+.simanta-app .sidebar a .nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+}
+.simanta-app .sidebar a:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    transform: translateX(1px);
+}
+.simanta-app .sidebar a.active {
+    background: linear-gradient(90deg, var(--primary) 0%, #1c7fd6 100%);
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+}
+.simanta-app .sidebar a.active .icon {
+    opacity: 1;
+}
+.simanta-app .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 22px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.simanta-app .sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+.simanta-app .sidebar-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--accent), var(--primary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+.simanta-app .sidebar-user-text p {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+.simanta-app .sidebar-user-text span {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 10.5px;
+    letter-spacing: 0.5px;
+}
+.simanta-app .logout-btn {
+    width: 100%;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    color: #fca5a5;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 600;
+    transition: 0.18s;
+}
+.simanta-app .logout-btn .icon {
+    width: 14px;
+    height: 14px;
+}
+.simanta-app .logout-btn:hover {
+    background: var(--red);
+    border-color: var(--red);
+    color: #fff;
+}
+
+/* ---- Main / topbar / content ---- */
+.simanta-app .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    width: calc(100% - var(--sidebar-w));
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.simanta-app .topbar {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 16px 30px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+}
+.simanta-app .topbar h2 {
+    color: var(--ink-800);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+.simanta-app .topbar p {
+    color: var(--ink-500);
+    font-size: 12.5px;
+    margin-top: 2px;
+}
+.simanta-app .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.simanta-app .topbar-search {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--slate-bg);
+    border: 1px solid transparent;
+    border-radius: 11px;
+    padding: 9px 16px;
+    width: 220px;
+    transition: all 0.18s ease;
+}
+.simanta-app .topbar-search:focus-within {
+    background: #fff;
+    border-color: var(--line);
+    box-shadow: 0 0 0 3px var(--primary-soft);
+    width: 250px;
+}
+.simanta-app .topbar-search .icon {
+    width: 16px;
+    height: 16px;
+    color: var(--ink-400);
+    flex-shrink: 0;
+}
+.simanta-app .topbar-search input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 13px;
+    color: var(--ink-700, #334155);
+    width: 100%;
+    font-family: var(--font);
+}
+.simanta-app .topbar-search input::placeholder {
+    color: var(--ink-400);
+}
+
+.simanta-app .topbar-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--ink-500);
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--slate-bg);
+    padding: 8px 14px;
+    border-radius: 99px;
+    white-space: nowrap;
+}
+.simanta-app .topbar-date .icon {
+    width: 14px;
+    height: 14px;
+}
+
+.simanta-app .user-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 5px 14px 5px 5px;
+    border-radius: 99px;
+    background: var(--slate-bg);
+    transition: background 0.15s ease;
+}
+.simanta-app .user-chip:hover {
+    background: #e7edf3;
+}
+.simanta-app .avatar,
+.simanta-app .avatar-img {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--accent), var(--primary));
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+.simanta-app .avatar-img {
+    object-fit: cover;
+}
+.simanta-app .user-chip-text p {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-800);
+    line-height: 1.2;
+    white-space: nowrap;
+}
+.simanta-app .user-chip-text span {
+    font-size: 11px;
+    color: var(--ink-500);
+}
+
+.simanta-app .content {
+    padding: 26px 30px 40px;
+    max-width: 1440px;
+    width: 100%;
+}
+
+/* Notification bell */
+.simanta-app .notif-wrap {
+    position: relative;
+}
+.simanta-app .notif-btn {
+    background: var(--slate-bg);
+    border: none;
+    cursor: pointer;
+    position: relative;
+    width: 38px;
+    height: 38px;
+    border-radius: 99px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-600);
+    transition: background 0.15s ease;
+}
+.simanta-app .notif-btn .icon {
+    width: 18px;
+    height: 18px;
+}
+.simanta-app .notif-btn:hover {
+    background: #e7edf3;
+}
+.simanta-app .notif-badge {
+    display: none;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: var(--red);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 2px #fff;
+}
+.simanta-app .notif-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 46px;
+    width: 330px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    max-height: 420px;
+    overflow-y: auto;
+    z-index: 60;
+}
+#notifList {
+    padding: 8px;
+}
+#notifList > div {
+    border-radius: var(--radius-sm);
+}
+#notifList > div:hover {
+    background: var(--slate-bg) !important;
+}
+
+/* ==========================================================================
+   WELCOME BANNER (dashboard)
+   ========================================================================== */
+.simanta-app .welcome-banner {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+        120deg,
+        var(--primary-darker) 0%,
+        var(--primary) 60%,
+        #0077cc 100%
+    );
+    border-radius: var(--radius-lg);
+    padding: 32px 34px;
+    margin-bottom: 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    box-shadow: 0 16px 40px -14px rgba(0, 91, 172, 0.5);
+}
+.simanta-app .welcome-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.08) 1px,
+        transparent 1px
+    );
+    background-size: 26px 26px;
+    opacity: 0.6;
+    pointer-events: none;
+}
+.simanta-app .welcome-banner::after {
+    content: "";
+    position: absolute;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    top: -170px;
+    right: -40px;
+    pointer-events: none;
+}
+.simanta-app .welcome-text {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+}
+.simanta-app .welcome-text h2 {
+    color: #fff;
+    font-size: 25px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: -0.3px;
+}
+.simanta-app .welcome-text p {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 13.5px;
+    margin-top: 9px;
+    line-height: 1.6;
+}
+.simanta-app .welcome-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+}
+.simanta-app .welcome-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    color: var(--primary);
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 700;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease;
+}
+.simanta-app .welcome-btn-primary:hover {
+    transform: translateY(-1px);
+}
+.simanta-app .welcome-btn-primary .icon {
+    width: 15px;
+    height: 15px;
+}
+.simanta-app .welcome-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s ease;
+}
+.simanta-app .welcome-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.24);
+}
+.simanta-app .welcome-btn-secondary .icon {
+    width: 15px;
+    height: 15px;
+}
+.simanta-app .welcome-pills {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+.simanta-app .welcome-pill {
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(6px);
+    border-radius: 14px;
+    padding: 16px 22px;
+    text-align: center;
+    min-width: 96px;
+}
+.simanta-app .welcome-pill .val {
+    font-size: 25px;
+    font-weight: 800;
+}
+.simanta-app .welcome-pill .val.amber {
+    color: #fbbf24;
+}
+.simanta-app .welcome-pill .val.rose {
+    color: #fca5a5;
+}
+.simanta-app .welcome-pill .val.mint {
+    color: #6ee7b7;
+}
+.simanta-app .welcome-pill .lbl {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 11px;
+    margin-top: 4px;
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   STAT CARDS  (.stats-grid / .stat-grid > .stat-card)
+   ========================================================================== */
+.simanta-app .stats-grid {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 26px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.simanta-app .stat-grid {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 26px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.simanta-app .stat-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-xs);
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+.simanta-app .stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    opacity: 0.9;
+}
+.simanta-app .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+.simanta-app .stat-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+.simanta-app .stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-light);
+    color: var(--primary);
+}
+.simanta-app .stat-icon .icon {
+    width: 21px;
+    height: 21px;
+}
+.simanta-app .stat-icon.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+.simanta-app .stat-icon.amber {
+    background: var(--amber-bg);
+    color: var(--amber-dark);
+}
+.simanta-app .stat-icon.red {
+    background: var(--red-bg);
+    color: var(--red-text);
+}
+.simanta-app .stat-icon.green {
+    background: var(--green-bg);
+    color: var(--green-text);
+}
+.simanta-app .stat-icon.purple {
+    background: var(--purple-bg);
+    color: var(--purple-text);
+}
+.simanta-app .stat-icon.orange {
+    background: var(--orange-bg);
+    color: var(--orange-text);
+}
+.simanta-app .stat-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: var(--green-bg);
+    color: var(--green-text);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 9px;
+    border-radius: 99px;
+    white-space: nowrap;
+}
+.simanta-app .stat-trend.down {
+    background: var(--red-bg);
+    color: var(--red-text);
+}
+.simanta-app .stat-trend .icon {
+    width: 11px;
+    height: 11px;
+}
+.simanta-app .stat-card .val {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--ink-800);
+    letter-spacing: -0.5px;
+}
+.simanta-app .stat-card .val.blue {
+    color: var(--primary);
+}
+.simanta-app .stat-card .val.red {
+    color: var(--red-text);
+}
+.simanta-app .stat-card .val.yellow {
+    color: var(--amber-text);
+}
+.simanta-app .stat-card .val.green {
+    color: var(--green-text);
+}
+.simanta-app .stat-card .val.purple {
+    color: var(--purple-text);
+}
+.simanta-app .stat-card .lbl {
+    color: var(--ink-600);
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 4px;
+}
+.simanta-app .stat-card .sub {
+    color: var(--ink-400);
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+/* Monitoring / Laporan color-topped variant */
+.simanta-app .stat-grid .stat-card {
+    border-top: 1px solid var(--line);
+}
+.simanta-app .stat-card.blue::before {
+    background: var(--primary);
+}
+.simanta-app .stat-card.green::before {
+    background: var(--green);
+}
+.simanta-app .stat-card.yellow::before {
+    background: var(--amber);
+}
+.simanta-app .stat-card.orange::before {
+    background: var(--orange);
+}
+.simanta-app .stat-card.red::before {
+    background: var(--red);
+}
+.simanta-app .stat-card.blue .val {
+    color: var(--primary);
+}
+.simanta-app .stat-card.green .val {
+    color: var(--green-text);
+}
+.simanta-app .stat-card.yellow .val {
+    color: var(--amber-text);
+}
+.simanta-app .stat-card.orange .val {
+    color: var(--orange-text);
+}
+.simanta-app .stat-card.red .val {
+    color: var(--red-text);
+}
+.simanta-app .stat-grid .stat-card .val {
+    font-size: 20px;
+}
+.simanta-app .laporan-stat .val {
+    font-size: 19px;
+}
+
+/* ==========================================================================
+   CARDS / TABLES
+   ========================================================================== */
+.simanta-app .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+    margin-bottom: 24px;
+}
+.simanta-app .card-header {
+    padding: 17px 22px;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.simanta-app .card-header h3 {
+    color: var(--ink-800);
+    font-size: 15px;
+    font-weight: 700;
+}
+.simanta-app .card-header p {
+    color: var(--ink-500);
+    font-size: 12px;
+    margin-top: 2px;
+}
+.simanta-app .card-body {
+    padding: 22px 24px;
+}
+.simanta-app .card-body h3 {
+    color: var(--ink-800);
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.simanta-app table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.simanta-app th {
+    background: #f8fafc;
+    color: var(--ink-500);
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 12px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+}
+.simanta-app td {
+    padding: 13px 12px;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 11px;
+    color: var(--ink-600);
+    vertical-align: middle;
+}
+.simanta-app tr:last-child td {
+    border-bottom: none;
+}
+.simanta-app tbody tr {
+    transition: background 0.12s ease;
+}
+.simanta-app tbody tr:hover td {
+    background: #f9fbfd;
+}
+.simanta-app .td-inv {
+    color: var(--primary);
+    font-weight: 700;
+}
+.simanta-app .td-red {
+    color: var(--red-text);
+    font-weight: 600;
+}
+.simanta-app .td-orange {
+    color: var(--orange-text);
+    font-weight: 600;
+}
+.simanta-app .td-sub {
+    color: var(--ink-400);
+    font-size: 11px;
+    margin-top: 2px;
+}
+.simanta-app .kategori-badge {
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   BADGES
+   ========================================================================== */
+.simanta-app .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.simanta-app .badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+.simanta-app .badge-paid {
+    background: var(--green-bg);
+    color: var(--green-text);
+}
+.simanta-app .badge-upcoming {
+    background: var(--amber-bg);
+    color: var(--amber-text);
+}
+.simanta-app .badge-overdue {
+    background: var(--red-bg);
+    color: var(--red-text);
+}
+.simanta-app .badge-draft {
+    background: var(--blue-bg);
+    color: var(--blue-text);
+}
+.simanta-app .badge-archived {
+    background: var(--slate-bg);
+    color: var(--ink-500);
+}
+
+.simanta-app .reminder-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+.simanta-app .reminder-badge.sent {
+    color: var(--green-text);
+}
+.simanta-app .reminder-badge.sched {
+    color: var(--blue-text);
+}
+.simanta-app .reminder-badge.none {
+    color: var(--ink-400);
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   ACTIVITY LIST (dashboard)
+   ========================================================================== */
+.simanta-app .aktivitas-list {
+    padding: 8px 22px 14px;
+}
+.simanta-app .aktivitas-item {
+    display: flex;
+    gap: 13px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line-soft);
+}
+.simanta-app .aktivitas-item:last-child {
+    border-bottom: none;
+}
+.simanta-app .akt-dot {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.simanta-app .akt-dot.green {
+    background: var(--green-bg);
+}
+.simanta-app .akt-dot.blue {
+    background: var(--blue-bg);
+}
+.simanta-app .akt-dot.red {
+    background: var(--red-bg);
+}
+.simanta-app .akt-dot.yellow {
+    background: var(--amber-bg);
+}
+.simanta-app .akt-text p {
+    color: var(--ink-700, #334155);
+    font-size: 13px;
+    font-weight: 500;
+}
+.simanta-app .akt-text span {
+    color: var(--ink-400);
+    font-size: 11px;
+}
+
+.simanta-app .bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+/* ==========================================================================
+   TOOLBAR / SEARCH / BUTTONS
+   ========================================================================== */
+.simanta-app .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+.simanta-app .search-box {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 11px;
+    padding: 10px 15px;
+    flex: 1;
+    max-width: 400px;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+.simanta-app .search-box:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-soft);
+}
+.simanta-app .search-box .icon {
+    width: 16px;
+    height: 16px;
+    color: var(--ink-400);
+    flex-shrink: 0;
+}
+.simanta-app .search-box input {
+    border: none;
+    outline: none;
+    font-size: 13px;
+    color: var(--ink-800);
+    width: 100%;
+    background: transparent;
+}
+.simanta-app .search-box input::placeholder {
+    color: var(--ink-400);
+}
+
+.simanta-app .btn-primary,
+.simanta-app .btn-filter,
+.simanta-app .btn-save,
+.simanta-app .save-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 91, 172, 0.25);
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
+.simanta-app .btn-primary:hover,
+.simanta-app .btn-filter:hover,
+.simanta-app .btn-save:hover,
+.simanta-app .save-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 91, 172, 0.32);
+}
+.simanta-app .btn-primary .icon,
+.simanta-app .btn-save .icon,
+.simanta-app .save-btn .icon {
+    width: 14px;
+    height: 14px;
+}
+.simanta-app .btn-reset,
+.simanta-app .btn-cancel {
+    background: var(--slate-bg);
+    color: var(--ink-500);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.15s;
+}
+.simanta-app .btn-reset:hover,
+.simanta-app .btn-cancel:hover {
+    background: #e2e8f0;
+    color: var(--ink-700, #334155);
+}
+
+.simanta-app .btn-edit,
+.simanta-app .btn-delete {
+    border: none;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+.simanta-app .btn-edit .icon,
+.simanta-app .btn-delete .icon {
+    width: 13px;
+    height: 13px;
+}
+.simanta-app .btn-edit {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+.simanta-app .btn-edit:hover {
+    background: var(--primary);
+    color: #fff;
+}
+.simanta-app .btn-delete {
+    background: var(--red-bg);
+    color: var(--red-text);
+}
+.simanta-app .btn-delete:hover {
+    background: var(--red);
+    color: #fff;
+}
+
+.simanta-app .btn-simpan {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: #fff;
+    border: none;
+    border-radius: 11px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.28);
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+.simanta-app .btn-simpan:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
+}
+
+/* ==========================================================================
+   ALERTS
+   ========================================================================== */
+.simanta-app .alert-success {
+    background: var(--green-bg);
+    border: 1px solid #bbf7d0;
+    color: var(--green-dark);
+    padding: 13px 18px;
+    border-radius: 11px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.simanta-app .alert-error {
+    background: var(--red-bg);
+    border: 1px solid #fecaca;
+    color: var(--red-dark);
+    padding: 13px 18px;
+    border-radius: 11px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ==========================================================================
+   FILTER BAR
+   ========================================================================== */
+.simanta-app .filter-bar {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    padding: 16px 20px;
+    margin-bottom: 22px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.simanta-app .filter-bar input[type="text"],
+.simanta-app .filter-bar select {
+    padding: 10px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 9px;
+    font-size: 11px;
+    color: var(--ink-700, #334155);
+    background: #f8fafc;
+    outline: none;
+    cursor: pointer;
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease;
+}
+.simanta-app .filter-bar input[type="text"] {
+    flex: 1;
+    min-width: 220px;
+    cursor: text;
+}
+.simanta-app .filter-bar select {
+    min-width: 150px;
+}
+.simanta-app .filter-bar input[type="text"]::placeholder {
+    color: var(--ink-400);
+}
+.simanta-app .filter-bar input[type="text"]:focus,
+.simanta-app .filter-bar select:focus {
+    border-color: var(--primary);
+    background: #fff;
+}
+
+.simanta-app .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.simanta-app .info-row p {
+    color: var(--ink-500);
+    font-size: 13px;
+}
+.simanta-app .info-row strong {
+    color: var(--ink-800);
+}
+
+.simanta-app .empty-state {
+    text-align: center;
+    padding: 56px 20px;
+    color: var(--ink-400);
+}
+.simanta-app .empty-state .icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+.simanta-app .empty-state h3 {
+    color: var(--ink-600);
+    font-size: 15px;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+.simanta-app .empty-state p {
+    font-size: 13px;
+}
+
+/* ==========================================================================
+   MODAL
+   ========================================================================== */
+.simanta-app .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 26, 48, 0.55);
+    backdrop-filter: blur(3px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+.simanta-app .modal-overlay.active {
+    display: flex;
+}
+.simanta-app .modal {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 660px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    animation: modalPop 0.18s ease;
+}
+@keyframes modalPop {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+.simanta-app .modal-header {
+    padding: 22px 26px;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 1;
+}
+.simanta-app .modal-header h3 {
+    color: var(--ink-800);
+    font-size: 17px;
+    font-weight: 800;
+}
+.simanta-app .modal-header p {
+    color: var(--ink-500);
+    font-size: 12px;
+    margin-top: 3px;
+}
+.simanta-app .modal-close {
+    background: var(--slate-bg);
+    border: none;
+    color: var(--ink-500);
+    font-size: 16px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    line-height: 1;
+    transition: 0.15s;
+}
+.simanta-app .modal-close:hover {
+    background: var(--red-bg);
+    color: var(--red-text);
+}
+.simanta-app .modal-body {
+    padding: 26px;
+}
+.simanta-app .modal-footer {
+    padding: 16px 26px;
+    border-top: 1px solid var(--line-soft);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+}
+
+/* ==========================================================================
+   FORMS
+   ========================================================================== */
+.simanta-app .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+.simanta-app .form-row.full {
+    grid-template-columns: 1fr;
+}
+.simanta-app .form-row.three {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.simanta-app .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+.simanta-app .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+.simanta-app .form-group.full {
+    grid-column: 1/-1;
+}
+.simanta-app .form-group label {
+    color: var(--ink-700, #334155);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+.simanta-app .form-group label .required,
+.simanta-app .form-group label .req {
+    color: var(--red);
+    margin-left: 2px;
+}
+
+.simanta-app .form-group input,
+.simanta-app .form-group select,
+.simanta-app .form-group textarea,
+.simanta-app .form-input,
+.simanta-app .form-control {
+    padding: 11px 13px;
+    border: 1.5px solid var(--line);
+    border-radius: 9px;
+    font-size: 13px;
+    color: var(--ink-800);
+    outline: none;
+    background: #f8fafc;
+    font-family: var(--font);
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+    width: 100%;
+}
+.simanta-app .form-group input:focus,
+.simanta-app .form-group select:focus,
+.simanta-app .form-group textarea:focus,
+.simanta-app .form-input:focus,
+.simanta-app .form-control:focus {
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 3px var(--primary-soft);
+}
+.simanta-app .form-group input[readonly] {
+    background: #f1f5f9;
+    color: var(--ink-500);
+}
+.simanta-app .form-group input::placeholder,
+.simanta-app .form-group textarea::placeholder {
+    color: var(--ink-400);
+}
+.simanta-app .form-group .hint {
+    color: var(--ink-400);
+    font-size: 11px;
+}
+.simanta-app .form-label {
+    display: block;
+    color: var(--ink-700, #334155);
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+.simanta-app .field-error {
+    color: var(--red-dark);
+    font-size: 11px;
+    margin-top: 2px;
+    font-weight: 500;
+}
+
+.simanta-app .input-prefix {
+    display: flex;
+    align-items: center;
+}
+.simanta-app .input-prefix span {
+    background: #eef2f7;
+    padding: 11px 13px;
+    border: 1.5px solid var(--line);
+    border-right: none;
+    border-radius: 9px 0 0 9px;
+    font-size: 13px;
+    color: var(--ink-500);
+    font-weight: 700;
+}
+.simanta-app .input-prefix input {
+    border-radius: 0 9px 9px 0 !important;
+    flex: 1;
+}
+
+select.tagihan-select {
+    width: 100%;
+    padding: 13px 16px;
+    border: 2px solid var(--primary);
+    border-radius: 11px;
+    font-size: 14px;
+    color: var(--ink-700, #334155);
+    outline: none;
+    background: #f8fafc;
+    cursor: pointer;
+    font-family: var(--font);
+}
+
+/* Upload area */
+.simanta-app .upload-area {
+    border: 2px dashed #cbd5e1;
+    border-radius: 11px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    background: #f8fafc;
+}
+.simanta-app .upload-area:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+.simanta-app .upload-area .upload-icon {
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+.simanta-app .upload-area p {
+    color: var(--ink-500);
+    font-size: 13px;
+}
+.simanta-app .upload-area span {
+    color: var(--primary);
+    font-weight: 700;
+    cursor: pointer;
+}
+.simanta-app .upload-area small {
+    color: var(--ink-400);
+    font-size: 11px;
+    display: block;
+    margin-top: 4px;
+}
+#fileInput {
+    display: none;
+}
+
+/* Toggle switches for checkboxes in settings-style forms */
+.simanta-app .setting-item input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 42px;
+    height: 24px;
+    background: #e2e8f0;
+    border-radius: 99px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+}
+.simanta-app .setting-item input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease;
+}
+.simanta-app .setting-item input[type="checkbox"]:checked {
+    background: var(--primary);
+}
+.simanta-app .setting-item input[type="checkbox"]:checked::before {
+    transform: translateX(18px);
+}
+
+/* ==========================================================================
+   INFO CARD (pembayaran)
+   ========================================================================== */
+.simanta-app .info-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    margin-bottom: 20px;
+    display: none;
+    box-shadow: var(--shadow-xs);
+}
+.simanta-app .info-card.show {
+    display: block;
+}
+.simanta-app .info-card-header {
+    padding: 15px 22px;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.simanta-app .info-card-header h3 {
+    color: var(--ink-800);
+    font-size: 14px;
+    font-weight: 700;
+}
+.simanta-app .info-body {
+    padding: 22px 24px;
+}
+.simanta-app .info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 18px;
+}
+.simanta-app .info-item label {
+    color: var(--ink-400);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 4px;
+}
+.simanta-app .info-item p {
+    color: var(--ink-800);
+    font-size: 13px;
+    font-weight: 600;
+}
+.simanta-app .total-nilai {
+    color: var(--primary);
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+/* Timeline */
+.simanta-app .timeline {
+    padding: 22px;
+}
+.simanta-app .timeline h3 {
+    color: var(--ink-800);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 22px;
+}
+.simanta-app .timeline-item {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 22px;
+    position: relative;
+}
+.simanta-app .timeline-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 16px;
+    top: 36px;
+    width: 2px;
+    height: calc(100% - 8px);
+    background: var(--line);
+}
+.simanta-app .tl-dot {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    z-index: 1;
+    background: #fff;
+}
+.simanta-app .tl-dot.done {
+    background: var(--green-bg);
+    border: 2px solid var(--green);
+}
+.simanta-app .tl-dot.active {
+    background: var(--blue-bg);
+    border: 2px solid var(--blue);
+}
+.simanta-app .tl-dot.pending {
+    background: var(--slate-bg);
+    border: 2px solid var(--line);
+}
+.simanta-app .tl-content h4 {
+    color: var(--ink-800);
+    font-size: 13px;
+    font-weight: 700;
+}
+.simanta-app .tl-content p {
+    color: var(--ink-400);
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+/* ==========================================================================
+   CHARTS / LAPORAN
+   ========================================================================== */
+.simanta-app .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+.simanta-app .chart-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    padding: 22px;
+    box-shadow: var(--shadow-xs);
+}
+.simanta-app .chart-card h3 {
+    color: var(--ink-800);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.simanta-app .chart-card p {
+    color: var(--ink-500);
+    font-size: 11px;
+    margin-bottom: 18px;
+}
+.simanta-app .chart-wrap {
+    position: relative;
+    height: 220px;
+}
+
+.simanta-app .kategori-list {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+.simanta-app .kategori-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.simanta-app .kat-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.simanta-app .kat-name {
+    flex: 1;
+    font-size: 13px;
+    color: var(--ink-700, #334155);
+}
+.simanta-app .kat-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-800);
+    white-space: nowrap;
+}
+
+.simanta-app .status-list {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+.simanta-app .status-item .status-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.simanta-app .status-item .status-label {
+    font-size: 13px;
+    color: var(--ink-700, #334155);
+    font-weight: 500;
+}
+.simanta-app .status-item .status-count {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-800);
+}
+.simanta-app .progress-bar {
+    height: 7px;
+    background: var(--slate-bg);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.simanta-app .progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+/* ==========================================================================
+   PENGATURAN
+   ========================================================================== */
+.simanta-app .setting-grid {
+    display: grid;
+    grid-template-columns: 3.5fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+.simanta-app .setting-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px;
+    box-shadow: var(--shadow-xs);
+}
+.simanta-app .setting-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink-800);
+    margin-bottom: 6px;
+}
+.simanta-app .setting-desc {
+    color: var(--ink-500);
+    font-size: 13px;
+    margin-bottom: 22px;
+    line-height: 1.6;
+}
+.simanta-app .setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line-soft);
+    gap: 16px;
+}
+.simanta-app .setting-item:last-child {
+    border-bottom: none;
+}
+.simanta-app .setting-name {
+    color: var(--ink-800);
+    font-size: 13.5px;
+    font-weight: 700;
+}
+.simanta-app .setting-sub {
+    color: var(--ink-500);
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.simanta-app .summary-item {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line-soft);
+}
+.simanta-app .summary-item:last-child {
+    border-bottom: none;
+}
+.simanta-app .summary-item small {
+    color: var(--ink-500);
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+.simanta-app .summary-item h2 {
+    color: var(--primary);
+    margin-top: 6px;
+    font-size: 26px;
+    font-weight: 800;
+}
+
+/* ==========================================================================
+   RESPONSIVE (app shell)
+   ========================================================================== */
+@media (max-width: 1100px) {
+    .simanta-app .bottom-grid,
+    .simanta-app .setting-grid {
+        grid-template-columns: 1fr;
+    }
+    .simanta-app .chart-grid {
+        grid-template-columns: 1fr 0.5fr;
+    }
+    .simanta-app .info-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 900px) {
+    :root {
+        --sidebar-w: 76px;
+    }
+    .simanta-app .sidebar-brand p,
+    .simanta-app .sidebar-label,
+    .simanta-app .sidebar a span,
+    .simanta-app .sidebar-footer p,
+    .simanta-app .sidebar-footer span {
+        display: none;
+    }
+    .simanta-app .sidebar-brand {
+        justify-content: center;
+        margin: 0;
+        padding: 0 0 16px;
+    }
+    .simanta-app .sidebar-brand h1 {
+        display: none;
+    }
+    .simanta-app .sidebar a {
+        justify-content: center;
+        padding: 12px;
+        margin: 2px 10px;
+    }
+    .simanta-app .content {
+        padding: 20px 16px 32px;
+    }
+    .simanta-app .topbar {
+        padding: 14px 18px;
+    }
+}
+
+/* ==========================================================================
+   AUTH PAGES  (login & register)
+   ========================================================================== */
+body.simanta-auth {
+    font-family: var(--font);
+    min-height: 100vh;
+    display: flex;
+}
+body.simanta-auth.auth-split {
+    align-items: stretch;
+}
+body.simanta-auth.auth-center {
+    background: linear-gradient(
+        135deg,
+        var(--primary-darker) 0%,
+        var(--primary) 55%,
+        #0077cc 100%
+    );
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.simanta-auth .left-panel {
+    width: 55%;
+    background: linear-gradient(
+        135deg,
+        var(--primary-darker) 0%,
+        var(--primary) 55%,
+        #0077cc 100%
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+}
+.simanta-auth .dots {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.06) 1px,
+        transparent 1px
+    );
+    background-size: 30px 30px;
+}
+.simanta-auth .circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+}
+.simanta-auth .c1 {
+    width: 500px;
+    height: 500px;
+    top: -180px;
+    right: -180px;
+}
+.simanta-auth .c2 {
+    width: 350px;
+    height: 350px;
+    bottom: -120px;
+    left: -120px;
+}
+.simanta-auth .c3 {
+    width: 200px;
+    height: 200px;
+    top: 60%;
+    right: 5%;
+}
+.simanta-auth .c4 {
+    width: 120px;
+    height: 120px;
+    top: 10%;
+    left: 8%;
+}
+
+.simanta-auth .left-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 40px;
+}
+.simanta-auth .big-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+.simanta-auth .big-logo-icon {
+    width: 90px;
+    height: 90px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 44px;
+    backdrop-filter: blur(10px);
+    color: #fff;
+}
+.simanta-auth .big-logo-icon .icon {
+    width: 42px;
+    height: 42px;
+}
+.simanta-auth .big-logo h1 {
+    color: #fff;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+.simanta-auth .big-logo p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+.simanta-auth .login-stat-cards {
+    display: flex;
+    gap: 16px;
+}
+.simanta-auth .login-stat-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    padding: 20px 24px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    min-width: 110px;
+}
+.simanta-auth .login-stat-icon {
+    color: #fff;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+}
+.simanta-auth .login-stat-icon .icon {
+    width: 22px;
+    height: 22px;
+}
+.simanta-auth .login-stat-card .label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.simanta-auth .tagline h2 {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+.simanta-auth .tagline p {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 13px;
+    margin-top: 10px;
+    line-height: 1.7;
+}
+.simanta-auth .features {
+    display: flex;
+    gap: 20px;
+    margin-top: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.simanta-auth .feature {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+}
+.simanta-auth .feature::before {
+    content: "✓";
+    color: #34d399;
+    font-weight: 700;
+}
+
+.simanta-auth .right-panel {
+    width: 45%;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+.simanta-auth .login-card,
+.simanta-auth .register-card {
+    background: #fff;
+    border-radius: 22px;
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    z-index: 1;
+}
+.simanta-auth .register-card {
+    max-width: 440px;
+    padding: 40px 36px;
+}
+
+.simanta-auth .card-brand,
+.simanta-auth .card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+}
+.simanta-auth .card-header {
+    flex-direction: column;
+    text-align: center;
+}
+.simanta-auth .card-brand-icon,
+.simanta-auth .card-header .logo {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 22px;
+    box-shadow: 0 6px 16px rgba(0, 91, 172, 0.3);
+}
+.simanta-auth .card-brand-icon .icon,
+.simanta-auth .card-header .logo .icon {
+    width: 23px;
+    height: 23px;
+}
+.simanta-auth .card-header .logo {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 14px;
+}
+.simanta-auth .card-brand-text h2,
+.simanta-auth .card-header h2 {
+    color: var(--primary);
+    font-size: 20px;
+    font-weight: 800;
+}
+.simanta-auth .card-brand-text p,
+.simanta-auth .card-header p {
+    color: var(--ink-500);
+    font-size: 11px;
+    margin-top: 1px;
+}
+
+.simanta-auth .card-title {
+    margin-bottom: 24px;
+}
+.simanta-auth .card-title h3 {
+    color: var(--ink-800);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+.simanta-auth .card-title p {
+    color: var(--ink-500);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.simanta-auth .error-box {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 11px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    color: var(--red-dark);
+    font-size: 13px;
+}
+
+.simanta-auth .form-group {
+    margin-bottom: 18px;
+}
+.simanta-auth .form-group label {
+    display: block;
+    color: var(--ink-700, #334155);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+.simanta-auth .form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 11px;
+    font-size: 14px;
+    color: var(--ink-800);
+    outline: none;
+    background: #f8fafc;
+    font-family: var(--font);
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+.simanta-auth .form-group input:focus {
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 3px var(--primary-soft);
+}
+.simanta-auth .form-group input::placeholder {
+    color: var(--ink-400);
+}
+
+.simanta-auth .form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+.simanta-auth .remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink-500);
+    font-size: 13px;
+    cursor: pointer;
+}
+.simanta-auth .remember input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+.simanta-auth .forgot-link {
+    color: var(--primary);
+    font-size: 13px;
+    text-decoration: none;
+    font-weight: 600;
+}
+.simanta-auth .forgot-link:hover {
+    text-decoration: underline;
+}
+
+.simanta-auth .btn-login,
+.simanta-auth .btn-register {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    border: none;
+    border-radius: 11px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0, 91, 172, 0.28);
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+.simanta-auth .btn-login:hover,
+.simanta-auth .btn-register:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px rgba(0, 91, 172, 0.35);
+}
+.simanta-auth .btn-login:active,
+.simanta-auth .btn-register:active {
+    transform: scale(0.99);
+}
+
+.simanta-auth .card-footer {
+    text-align: center;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line-soft);
+}
+.simanta-auth .card-footer p {
+    color: var(--ink-400);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.simanta-auth .login-link {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 13px;
+    color: var(--ink-500);
+}
+.simanta-auth .login-link a {
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: none;
+}
+.simanta-auth .login-link a:hover {
+    text-decoration: underline;
+}
+
+.simanta-auth .divider {
+    border: none;
+    border-top: 1px solid var(--line-soft);
+    margin: 0 0 24px;
+}
+.simanta-auth .copyright {
+    text-align: center;
+    margin-top: 22px;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 11px;
+    position: relative;
+    z-index: 1;
+}
+.simanta-auth .card-footer p {
+    color: var(--ink-500);
+    font-size: 13px;
+}
+.simanta-auth .card-footer a {
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: none;
+}
+.simanta-auth .card-footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 860px) {
+    body.simanta-auth.auth-split {
+        flex-direction: column;
+    }
+    .simanta-auth .left-panel,
+    .simanta-auth .right-panel {
+        width: 100%;
+    }
+    .simanta-auth .left-panel {
+        padding: 40px 24px;
+    }
+}
+
+/* ==========================================================================
+   LANDING PAGE (welcome)
+   ========================================================================== */
+body.simanta-landing {
+    font-family: var(--font);
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.simanta-landing nav {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    padding: 0 60px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 10px rgba(15, 23, 42, 0.05);
+}
+.simanta-landing .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.simanta-landing .nav-brand-icon {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(0, 91, 172, 0.35);
+}
+.simanta-landing .nav-brand-icon .icon {
+    width: 19px;
+    height: 19px;
+    color: #fff;
+}
+.simanta-landing .nav-brand h1 {
+    color: var(--primary);
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+}
+.simanta-landing .nav-brand span {
+    color: var(--ink-500);
+    font-size: 12px;
+    margin-left: 4px;
+    font-weight: 400;
+}
+.simanta-landing .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.simanta-landing .btn-outline {
+    padding: 9px 22px;
+    border: 1.5px solid var(--primary);
+    color: var(--primary);
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.18s ease;
+}
+.simanta-landing .btn-outline:hover {
+    background: var(--primary);
+    color: #fff;
+}
+.simanta-landing .btn-solid {
+    padding: 9px 22px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 91, 172, 0.28);
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+.simanta-landing .btn-solid:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 91, 172, 0.35);
+}
+
+.simanta-landing .hero {
+    background: linear-gradient(
+        135deg,
+        var(--primary-darker) 0%,
+        var(--primary) 55%,
+        #0077cc 100%
+    );
+    padding: 100px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.simanta-landing .hero .dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px
+    );
+    background-size: 28px 28px;
+}
+.simanta-landing .circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+}
+.simanta-landing .c1 {
+    width: 500px;
+    height: 500px;
+    top: -200px;
+    right: -150px;
+}
+.simanta-landing .c2 {
+    width: 300px;
+    height: 300px;
+    bottom: -100px;
+    left: -80px;
+}
+.simanta-landing .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.simanta-landing .hero-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 12.5px;
+    padding: 7px 18px;
+    border-radius: 99px;
+    margin-bottom: 26px;
+    letter-spacing: 0.4px;
+    font-weight: 500;
+}
+.simanta-landing .hero h2 {
+    color: #fff;
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+}
+.simanta-landing .hero h2 span {
+    color: #7dc4ff;
+}
+.simanta-landing .hero p {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 16px;
+    line-height: 1.75;
+    margin-bottom: 38px;
+}
+.simanta-landing .hero-buttons {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.simanta-landing .btn-hero-primary {
+    padding: 15px 38px;
+    background: #fff;
+    color: var(--primary);
+    border-radius: 11px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.18s ease;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+.simanta-landing .btn-hero-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+}
+.simanta-landing .btn-hero-secondary {
+    padding: 15px 38px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, 0.32);
+    border-radius: 11px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.18s ease;
+}
+.simanta-landing .btn-hero-secondary:hover {
+    background: rgba(255, 255, 255, 0.26);
+    transform: translateY(-2px);
+}
+
+.simanta-landing .stats-bar {
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    padding: 30px 60px;
+    display: flex;
+    justify-content: center;
+    gap: 64px;
+    flex-wrap: wrap;
+}
+.simanta-landing .stat-item {
+    text-align: center;
+}
+.simanta-landing .stat-item .val {
+    color: var(--primary);
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+.simanta-landing .stat-item .desc {
+    color: var(--ink-500);
+    font-size: 12px;
+    margin-top: 3px;
+    font-weight: 500;
+}
+
+.simanta-landing .section {
+    padding: 80px 60px;
+    max-width: 1140px;
+    margin: 0 auto;
+    width: 100%;
+}
+.simanta-landing .section-title {
+    text-align: center;
+    margin-bottom: 52px;
+}
+.simanta-landing .section-title h3 {
+    color: var(--ink-800);
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+.simanta-landing .section-title p {
+    color: var(--ink-500);
+    font-size: 14.5px;
+    margin-top: 10px;
+}
+
+.simanta-landing .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+.simanta-landing .feature-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 34px 28px;
+    border: 1px solid var(--line);
+    transition: all 0.2s ease;
+}
+.simanta-landing .feature-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 12px 28px rgba(0, 91, 172, 0.12);
+    transform: translateY(-4px);
+}
+.simanta-landing .feature-icon {
+    width: 54px;
+    height: 54px;
+    background: var(--primary-light);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: var(--primary);
+}
+.simanta-landing .feature-icon .icon {
+    width: 25px;
+    height: 25px;
+}
+.simanta-landing .feature-card h4 {
+    color: var(--ink-800);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+.simanta-landing .feature-card p {
+    color: var(--ink-500);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.simanta-landing footer {
+    background: var(--navy-900);
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    padding: 26px;
+    font-size: 12px;
+    margin-top: auto;
+}
+.simanta-landing footer span {
+    color: #7dc4ff;
+}
+
+@media (max-width: 900px) {
+    .simanta-landing nav {
+        padding: 0 24px;
+    }
+    .simanta-landing .hero {
+        padding: 70px 24px;
+    }
+    .simanta-landing .hero h2 {
+        font-size: 34px;
+    }
+    .simanta-landing .section {
+        padding: 56px 24px;
+    }
+    .simanta-landing .features-grid {
+        grid-template-columns: 1fr;
+    }
+    .simanta-landing .stats-bar {
+        gap: 32px;
+        padding: 24px;
+    }
+}

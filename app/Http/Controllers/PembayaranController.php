@@ -13,7 +13,7 @@ class PembayaranController extends Controller
     public function index()
     {
         // Hanya tampilkan tagihan yang belum dibayar
-        $tagihans = Tagihan::with(['vendor', 'kategori'])
+        $tagihans = Tagihan::with(['kategori'])
             ->whereIn('status', ['upcoming', 'overdue', 'draft'])
             ->orderBy('tanggal_jatuh_tempo', 'asc')
             ->get();
@@ -23,7 +23,7 @@ class PembayaranController extends Controller
 
     public function getTagihan($id)
     {
-        $tagihan = Tagihan::with(['vendor', 'kategori', 'reminders'])->findOrFail($id);
+        $tagihan = Tagihan::with(['kategori', 'reminders'])->findOrFail($id);
         return response()->json($tagihan);
     }
 
