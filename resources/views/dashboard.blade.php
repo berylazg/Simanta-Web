@@ -20,7 +20,7 @@
 
     @include('partials.topbar', [
         'title' => 'Dashboard',
-        'subtitle' => 'Ringkasan monitoring tagihan operasional PT Surveyor Indonesia Cabang Palembang',
+        'subtitle' => 'Ringkasan monitoring tagihan operasional perusahaan',
     ])
 
     <div class="content">
@@ -113,7 +113,7 @@
                             {{ Str::limit($t->nama_tagihan, 35) }}
                             <div class="td-sub">{{ $t->kategori->nama_kategori ?? '-' }}</div>
                         </td>
-                        <td>{{ $t->vendor->nama_vendor ?? '-' }}</td>
+                        <td>{{ $t->nama_vendor ?? '-' }}</td>
                         <td>{{ $t->kategori->nama_kategori ?? '-' }}</td>
                         <td>
                             <span class="{{ $t->status === 'overdue' ? 'td-red' : '' }}">

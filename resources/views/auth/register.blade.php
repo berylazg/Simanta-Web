@@ -10,105 +10,183 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/simanta.css') }}">
 </head>
-<body class="simanta-auth auth-center">
+<body class="simanta-auth auth-welcome">
 
-    <div class="dots"></div>
-    <div class="circle c1"></div>
-    <div class="circle c2"></div>
+    <div class="page-dots"></div>
+    <div class="bg-blob"></div>
 
-    <div class="register-card">
+    <!-- ===== BARIS LOGO MITRA ===== -->
+    <div class="auth-partners">
+        <div class="partner-logo">
+            <img class="partner-logo-img" src="../asset/img/di.png">
+        </div>
+        <div class="partner-logo">
+            <img class="partner-logo-img" src="../asset/img/id.png">
+        </div>
+        <div class="partner-logo">
+            <img class="partner-logo-img" src="../asset/img/si.png">
+        </div>
+    </div>
 
-        <div class="card-header">
-            <div class="logo">@include('partials.icon', ['name' => 'building'])</div>
-            <h2>SIMANTA</h2>
-            <p>Surveyor Indonesia Manajemen Tagihan</p>
+    <!-- ===== HERO + CARD ===== -->
+    <div class="hero-grid">
+
+        <div class="hero-left">
+
+            <h1>Selamat Datang di<br>Aplikasi <span>SIMANTA</span></h1>
+            <div class="hero-underline"></div>
+            <p>Sistem Manajemen Tagihan Terpadu PT Surveyor Indonesia yang mengintegrasikan seluruh proses monitoring, pengingat, dan pelaporan pembayaran dalam satu platform.</p>
+
+            <div class="hero-feature-cards">
+                <div class="hero-feature-card">
+                    <div class="hero-feature-icon">@include('partials.icon', ['name' => 'activity'])</div>
+                    <div class="label">Monitoring<br>Tagihan</div>
+                </div>
+                <div class="hero-feature-card">
+                    <div class="hero-feature-icon">@include('partials.icon', ['name' => 'mail'])</div>
+                    <div class="label">Email<br>Reminder</div>
+                </div>
+                <div class="hero-feature-card">
+                    <div class="hero-feature-icon">@include('partials.icon', ['name' => 'file-text'])</div>
+                    <div class="label">Laporan<br>Otomatis</div>
+                </div>
+            </div>
         </div>
 
-        <hr class="divider">
+        <div class="hero-right">
 
-        <div class="card-title">
-            <h3>Daftar Akun Baru</h3>
-            <p>Isi data berikut untuk membuat akun internal</p>
-        </div>
+            <!-- Tab switcher: Login / Registrasi --> 
+            <div class="auth-wrapper">
+                <div class="auth-tabs">
+                    <a href="{{ route('login') }}" class="auth-tab">Login</a>
+                    <a href="{{ route('register') }}" class="auth-tab active">Registrasi</a>
+                </div>
 
-        @if ($errors->any())
-            <div class="error-box">
-                {{ $errors->first() }}
+                <div class="login-card register-card">
+
+                    <div class="card-title">
+                        <h3>Daftar Akun Baru</h3>
+                        <p>Isi data berikut untuk membuat akun internal.</p>
+                    </div>
+
+                    @if ($errors->any())
+                        <div class="error-box">
+                            {{ $errors->first() }}
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
+
+                        <div class="form-group">
+                            <label for="name">Nama Lengkap</label>
+                            <div class="input-icon-group">
+                                <span class="field-icon">
+                                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+                                </span>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    placeholder="Masukkan nama lengkap"
+                                    value="{{ old('name') }}"
+                                    required
+                                    autofocus
+                                >
+                            </div>
+                            @error('name')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <div class="input-icon-group">
+                                <span class="field-icon">
+                                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+                                </span>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="Masukkan alamat email"
+                                    value="{{ old('email') }}"
+                                    required
+                                >
+                            </div>
+                            @error('email')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="input-icon-group">
+                                <span class="field-icon">
+                                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                </span>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    class="has-toggle"
+                                    placeholder="Minimal 8 karakter"
+                                    required
+                                >
+                                <button type="button" class="toggle-password" data-target="password" aria-label="Tampilkan password">
+                                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                            </div>
+                            @error('password')
+                                <div class="field-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password_confirmation">Konfirmasi Password</label>
+                            <div class="input-icon-group">
+                                <span class="field-icon">
+                                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                </span>
+                                <input
+                                    type="password"
+                                    id="password_confirmation"
+                                    name="password_confirmation"
+                                    class="has-toggle"
+                                    placeholder="Ulangi password"
+                                    required
+                                >
+                                <button type="button" class="toggle-password" data-target="password_confirmation" aria-label="Tampilkan password">
+                                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-register">Daftar Sekarang</button>
+
+                    </form>
+
+                    <div class="card-footer">
+                        <p>Sudah punya akun? <a href="{{ route('login') }}">Masuk di sini ›</a></p>
+                    </div>
+
+                </div>
+
             </div>
-        @endif
-
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-
-            <div class="form-group">
-                <label for="name">Nama Lengkap</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Masukkan nama lengkap"
-                    value="{{ old('name') }}"
-                    required
-                    autofocus
-                >
-                @error('name')
-                    <div class="field-error">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Masukkan alamat email"
-                    value="{{ old('email') }}"
-                    required
-                >
-                @error('email')
-                    <div class="field-error">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Minimal 8 karakter"
-                    required
-                >
-                @error('password')
-                    <div class="field-error">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="form-group">
-                <label for="password_confirmation">Konfirmasi Password</label>
-                <input
-                    type="password"
-                    id="password_confirmation"
-                    name="password_confirmation"
-                    placeholder="Ulangi password"
-                    required
-                >
-            </div>
-
-            <button type="submit" class="btn-register">Daftar Sekarang</button>
-
-        </form>
-
-        <div class="card-footer">
-            <p>Sudah punya akun? <a href="{{ route('login') }}">Masuk di sini</a></p>
         </div>
 
     </div>
 
-    <div class="copyright">
-        © 2024 PT Surveyor Indonesia Cabang Palembang — Sistem Informasi Internal
-    </div>
+    <script>
+        document.querySelectorAll('.toggle-password').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var input = document.getElementById(btn.dataset.target);
+                var isHidden = input.type === 'password';
+                input.type = isHidden ? 'text' : 'password';
+                btn.setAttribute('aria-label', isHidden ? 'Sembunyikan password' : 'Tampilkan password');
+            });
+        });
+    </script>
 
 </body>
 </html>
