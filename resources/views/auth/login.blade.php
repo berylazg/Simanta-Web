@@ -109,8 +109,43 @@
                                 placeholder="Masukkan password"
                                 required
                             >
-                            <button type="button" class="toggle-password" data-target="password" aria-label="Tampilkan password">
-                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                data-target="password"
+                                aria-label="Tampilkan password">
+
+                                <!-- Eye -->
+                                <svg class="icon eye-open"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round">
+
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+
+                                <!-- Eye Off -->
+                                <svg class="icon eye-closed"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    style="display:none">
+
+                                    <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20C5 20 1 12 1 12a21.8 21.8 0 0 1 5.06-5.94"/>
+                                    <path d="M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.8 21.8 0 0 1-4.13 5.3"/>
+                                    <path d="M1 1l22 22"/>
+                                    <path d="M9.88 9.88A3 3 0 0 0 14.12 14.12"/>
+                                </svg>
+
                             </button>
                         </div>
                      </div>
@@ -141,13 +176,37 @@
     </div>
 
     <script>
-        document.querySelectorAll('.toggle-password').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                var input = document.getElementById(btn.dataset.target);
-                var isHidden = input.type === 'password';
-                input.type = isHidden ? 'text' : 'password';
-                btn.setAttribute('aria-label', isHidden ? 'Sembunyikan password' : 'Tampilkan password');
+        document.querySelectorAll('.toggle-password').forEach(function(btn){
+
+            btn.addEventListener('click', function(){
+
+                const input = document.getElementById(btn.dataset.target);
+
+                const eyeOpen = btn.querySelector('.eye-open');
+                const eyeClosed = btn.querySelector('.eye-closed');
+
+                if(input.type === 'password'){
+
+                    input.type = 'text';
+
+                    eyeOpen.style.display = 'none';
+                    eyeClosed.style.display = 'block';
+
+                    btn.setAttribute('aria-label','Sembunyikan password');
+
+                }else{
+
+                    input.type = 'password';
+
+                    eyeOpen.style.display = 'block';
+                    eyeClosed.style.display = 'none';
+
+                    btn.setAttribute('aria-label','Tampilkan password');
+
+                }
+
             });
+
         });
     </script>
 
