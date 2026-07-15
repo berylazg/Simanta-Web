@@ -33,7 +33,7 @@
 
         <div class="hero-left">
 
-            <h1>Selamat Datang di<br>Aplikasi <span>SIMANTA</span></h1>
+            <h1>Selamat Datang di<br>Website <span>SIMANTA</span></h1>
             <div class="hero-underline"></div>
             <p>Sistem Manajemen Tagihan Terpadu PT Surveyor Indonesia yang mengintegrasikan seluruh proses monitoring, pengingat, dan pelaporan pembayaran dalam satu platform.</p>
 

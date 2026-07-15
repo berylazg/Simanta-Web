@@ -11,10 +11,6 @@
         <p>{{ $subtitle ?? '' }}</p>
     </div>
     <div class="topbar-right">
-        <div class="topbar-search">
-            @include('partials.icon', ['name' => 'search'])
-            <input type="text" placeholder="{{ $searchPlaceholder ?? 'Cari tagihan...' }}">
-        </div>
 
         <span class="topbar-date">
             @include('partials.icon', ['name' => 'calendar'])
@@ -31,16 +27,15 @@
             </div>
         </div>
 
-        <a href="{{ route('profile.edit') }}" class="user-chip">
-            @if(auth()->user()->foto)
-                <img src="{{ asset('storage/foto-profil/' . auth()->user()->foto) }}" class="avatar-img">
-            @else
-                <div class="avatar">{{ $initials ?: 'U' }}</div>
-            @endif
+        <div class="user-chip">
+            <div class="avatar">
+                {{ $initials }}
+            </div>
+
             <div class="user-chip-text">
-                <p>{{ Str::limit(auth()->user()->name, 16) }}</p>
+                <p>{{ Str::limit(auth()->user()->name,16) }}</p>
                 <span>Administrator</span>
             </div>
-        </a>
+        </div>
     </div>
 </div>

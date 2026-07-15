@@ -20,7 +20,7 @@
 
     @include('partials.topbar', [
         'title' => 'Dashboard',
-        'subtitle' => 'Ringkasan monitoring tagihan operasional perusahaan',
+        'subtitle' => 'Ringkasan monitoring tagihan operasional',
     ])
 
     <div class="content">
