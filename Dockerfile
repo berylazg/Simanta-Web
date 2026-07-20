@@ -21,6 +21,14 @@ COPY . /var/www/html
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
+# Build Vite Assets for production
+RUN npm install
+RUN npm run build
+
 # Install PHP and Node dependencies, then build Vite assets
 RUN composer install --optimize-autoloader --no-dev
 RUN npm install
