@@ -38,6 +38,10 @@ require __DIR__.'/auth.php';
 use Illuminate\Support\Facades\Artisan;
 
 Route::get('/setup-db', function() {
-    Artisan::call('migrate', ['--force' => true]);
-    return 'Database migrated successfully!';
+    try {
+        Artisan::call('migrate', ['--force' => true]);
+        return 'Database migrated successfully! You can now return to the homepage.';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
 });
