@@ -34,3 +34,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/setup-db', function() {
+    Artisan::call('migrate', ['--force' => true]);
+    return 'Database migrated successfully!';
+});
