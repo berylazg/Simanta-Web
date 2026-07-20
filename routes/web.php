@@ -35,13 +35,45 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 require __DIR__.'/auth.php';
 
+// Keep all imports at the bottom clean
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 Route::get('/setup-db', function() {
     try {
+        // 1. Run migrations first
         Artisan::call('migrate', ['--force' => true]);
-        return 'Database migrated successfully! You can now return to the homepage.';
+        $migrationOutput = Artisan::output();
+
+        // 2. If a local simanta.sql file exists, read and execute it to force create missing tables
+        $sqlExecuted = 'No SQL file executed';
+        if (file_exists(base_path('simanta.sql'))) {
+            $sql = file_get_contents(base_path('simanta.sql'));
+            
+            // Basic safety check: Only execute if tables like 'users' are missing
+            $checkUsers = DB::select("SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name='users'");
+            if (empty($checkUsers)) {
+                DB::unprepared($sql);
+                $sqlExecuted = 'simanta.sql executed successfully!';
+            } else {
+                $sqlExecuted = 'simanta.sql skipped because tables already exist.';
+            }
+        }
+
+        // 3. Check what tables exist after both attempts
+        $tables = DB::select("SELECT table_name FROM information_schema.tables WHERE table_schema='public'");
+        $tableNames = array_column($tables, 'table_name');
+
+        return response()->json([
+            'status' => 'Execution complete',
+            'migration_output' => trim($migrationOutput),
+            'sql_file_status' => $sqlExecuted,
+            'current_database_tables' => $tableNames,
+        ]);
     } catch (\Exception $e) {
-        return 'Error: ' . $e->getMessage();
+        return response()->json([
+            'status' => 'Failed',
+            'error_message' => $e->getMessage()
+        ]);
     }
 });
