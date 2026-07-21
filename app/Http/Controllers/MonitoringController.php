@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tagihan;
 use App\Models\KategoriTagihan;
+use App\Models\Vendor; // <-- Added the Vendor model import
 
 class MonitoringController extends Controller
 {
@@ -28,9 +29,12 @@ class MonitoringController extends Controller
             });
         }
 
-        // Filter vendor
+        // Filter vendor (Translates the string name back to the foreign key vendor_id)
         if ($request->nama_vendor) {
-            $query->where('nama_vendor', $request->nama_vendor);
+            $vendor = Vendor::where('nama_vendor', $request->nama_vendor)->first();
+            if ($vendor) {
+                $query->where('vendor_id', $vendor->id);
+            }
         }
 
         // Filter kategori
@@ -44,12 +48,13 @@ class MonitoringController extends Controller
         }
 
         $tagihans  = $query->orderBy('tanggal_jatuh_tempo', 'asc')->get();
-        $vendors = Tagihan::select('nama_vendor')
-            ->whereNotNull('nama_vendor')
+        
+        // Fix: Pull the vendor names directly from the new Vendor model
+        $vendors = Vendor::whereNotNull('nama_vendor')
             ->where('nama_vendor', '!=', '')
-            ->distinct()
             ->orderBy('nama_vendor')
             ->pluck('nama_vendor');
+
         $kategoris = KategoriTagihan::all();
 
         return view('monitoring.index', compact(
