@@ -90,7 +90,7 @@
                         type="time"
                         name="reminder_time"
                         class="form-control"
-                        value="{{ old('reminder_time', $setting->reminder_time ? substr($setting->reminder_time,0,5) : '08:00') }}">
+                        value="{{ old('reminder_time', $setting?->reminder_time ? substr($setting?->reminder_time,0,5) : '08:00') }}">
                 </div>
 
                 <div class="setting-item">
