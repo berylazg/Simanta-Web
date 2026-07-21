@@ -16,6 +16,10 @@ return new class extends Migration
 
             $table->boolean('status')->default(true);
 
+            // Added the two missing columns your controller needs!
+            $table->string('admin_email')->nullable();
+            $table->string('reminder_time')->nullable();
+
             $table->boolean('h30')->default(false);
 
             $table->boolean('h14')->default(false);
