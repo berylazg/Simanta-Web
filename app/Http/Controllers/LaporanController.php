@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tagihan;
 use App\Models\KategoriTagihan;
+use App\Models\Vendor; // <-- Added the Vendor model import
 use Carbon\Carbon;
 
 class LaporanController extends Controller
@@ -13,17 +14,28 @@ class LaporanController extends Controller
     {
         $kategoris = KategoriTagihan::all();
 
-        $vendors = Tagihan::select('nama_vendor')
-            ->whereNotNull('nama_vendor')
+        // 1. Pull vendors directly from the Vendor model for the dropdown
+        $vendors = Vendor::whereNotNull('nama_vendor')
             ->where('nama_vendor', '!=', '')
-            ->distinct()
             ->orderBy('nama_vendor')
             ->pluck('nama_vendor');
 
+        // Look up the actual vendor_id if a user searches by vendor name
+        // We do this once here so the charts below can just use the ID.
+        $vendorId = null;
+        if ($request->nama_vendor) {
+            $vendor = Vendor::where('nama_vendor', $request->nama_vendor)->first();
+            if ($vendor) {
+                $vendorId = $vendor->id;
+            }
+        }
+
         $query = Tagihan::query();
-        if ($request->bulan)      $query->whereMonth('tanggal_jatuh_tempo', $request->bulan);
-        if ($request->tahun)      $query->whereYear('tanggal_jatuh_tempo',  $request->tahun);
-        if ($request->nama_vendor)$query->where('nama_vendor', $request->nama_vendor);
+        if ($request->bulan)       $query->whereMonth('tanggal_jatuh_tempo', $request->bulan);
+        if ($request->tahun)       $query->whereYear('tanggal_jatuh_tempo',  $request->tahun);
+        
+        // 2. Main Query: Filter by vendor_id instead of nama_vendor
+        if ($vendorId)             $query->where('vendor_id', $vendorId);
         if ($request->kategori_id) $query->where('kategori_id', $request->kategori_id);
 
         $tagihans = $query->with(['kategori'])->get();
@@ -41,8 +53,11 @@ class LaporanController extends Controller
         for ($i = 5; $i >= 0; $i--) {
             $b = Carbon::now()->subMonths($i);
             $q = Tagihan::query();
-            if ($request->nama_vendor)   $q->where('nama_vendor',   $request->nama_vendor);
+            
+            // 3. Chart Query: Filter by vendor_id
+            if ($vendorId)             $q->where('vendor_id', $vendorId);
             if ($request->kategori_id) $q->where('kategori_id', $request->kategori_id);
+            
             $bulanList[] = [
                 'label' => $b->format('M \'y'),
                 'paid'  => (clone $q)->where('status','paid')
@@ -60,15 +75,42 @@ class LaporanController extends Controller
         $trenList = $bulanList;
 
         // Pengeluaran per kategori
+        // Notice we passed $vendorId into the closure via the `use` statement
         $perKategori = KategoriTagihan::withSum([
-            'tagihans as total' => function ($q) use ($request) {
+            'tagihans as total' => function ($q) use ($request, $vendorId) { 
 
-                if ($request->nama_vendor) {
-                    $q->where('nama_vendor', $request->nama_vendor);
+                // 4. Category Query: Filter by vendor_id
+                if ($vendorId) {
+                    $q->where('vendor_id', $vendorId);
                 }
 
                 if ($request->bulan) {
                     $q->whereMonth('tanggal_jatuh_tempo', $request->bulan);
+                }
+
+                if ($request->tahun) {
+                    $q->whereYear('tanggal_jatuh_tempo', $request->tahun);
+                }
+
+            }
+        ], 'nominal')->get()->filter(fn($k) => $k->total > 0);
+
+        // Distribusi status
+        $statusDist = [
+            ['label'=>'Lunas',           'val'=>$tagihans->where('status','paid')->count(),     'color'=>'#10b981'],
+            ['label'=>'Akan Jatuh Tempo','val'=>$tagihans->where('status','upcoming')->count(), 'color'=>'#f59e0b'],
+            ['label'=>'Terlambat',       'val'=>$tagihans->where('status','overdue')->count(),  'color'=>'#ef4444'],
+            ['label'=>'Draft',           'val'=>$tagihans->where('status','draft')->count(),    'color'=>'#3b82f6'],
+        ];
+
+        return view('laporan.index', compact(
+            'vendors','kategoris','bulanList','trenList',
+            'totalTagihan','sudahDibayar','belumDibayar',
+            'terlambat','totalPengeluaran','tagihanTerbesar',
+            'perKategori','statusDist'
+        ));
+    }
+}                    $q->whereMonth('tanggal_jatuh_tempo', $request->bulan);
                 }
 
                 if ($request->tahun) {
